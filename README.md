@@ -4,7 +4,7 @@
 <li>通过Modal窗口弹出[[YMCitySelect alloc] initWithDelegate:self]，需要传入代理控制器</li>
 <li>遵守协议:YMCitySelectDelegate</li>
 <li>实现代理方法:-(void)ym_ymCitySelectCityName:(NSString *)cityName</li>
-<a href="https://github.com/iosdeveloperSVIP/YMCitySelect/archive/master.zip" target="_blank" ><img src="https://raw.githubusercontent.com/iosdeveloperSVIP/YMCitySelect/master/ymchannelswitching.gif"></img></a>
+<a href="https://github.com/iosdeveloperSVIP/YMCitySelect/archive/master.zip" target="_blank" ><img src="https://raw.githubusercontent.com/iosdeveloperSVIP/YMCitySelect/master/ymcityselect.gif"></img></a>
 </ul>
 <p>GitHub：<a href="https://github.com/iosdeveloperSVIP"  target="_blank">iosdeveloperSVIP</a>
  &nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:iosdeveloper@vip.163.com">iosdeveloper@vip.163.com</a><p>
