@@ -1,6 +1,7 @@
 <h1>YMCitySelect</h1>
 <ul>
 <li>快速集成城市选择框架</li>
+<li>注意:请在info.plist文件里面配置key: NSLocationWhenInUseUsageDescription</li>
 <li>通过Modal窗口弹出[[YMCitySelect alloc] initWithDelegate:self]，需要传入代理控制器</li>
 <li>遵守协议:YMCitySelectDelegate</li>
 <li>实现代理方法:-(void)ym_ymCitySelectCityName:(NSString *)cityName</li>
@@ -8,7 +9,7 @@
 </ul>
 <p>GitHub：<a href="https://github.com/iosdeveloperSVIP"  target="_blank">iosdeveloperSVIP</a>
  &nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:iosdeveloper@vip.163.com">iosdeveloper@vip.163.com</a><p>
-<h4>亲爱的各位同行，如果在使用中出现bug，请联系邮箱:<a href="mailto:iosdeveloper@vip.163.com">iosdeveloper@vip.163.com</a>，如果使用不错的话请帮我点下右上角星星UnStar，非常感谢</h4>
+<h4>亲爱的各位同行，如果在使用中出现bug，请联系邮箱:<a href="mailto:iosdeveloper@vip.163.com">iosdeveloper@vip.163.com</a>，如果使用不错的话请帮我点下右上角星星Star，非常感谢</h4>
 <h1>操作目录</h1>
 <ul>
 <li><a href="#defaultstyles">一行代码集成</a>
@@ -35,4 +36,4 @@
 <br>YMCitySelectDelegate //请遵守协议
 <br>-(void)ym_ymCitySelectCityName:(NSString *)cityName
 <br>//请实现代理方法cityName就是返回的城市名</div>
-<h4>亲爱的各位同行，如果你已经浏览到这，请帮我点下右上角星星UnStar，非常感谢</h4>
+<h4>亲爱的各位同行，如果你已经浏览到这，请帮我点下右上角星星Star，非常感谢</h4>
