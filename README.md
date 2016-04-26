@@ -1,6 +1,7 @@
 <h1>YMCitySelect</h1>
 <ul>
 <li>快速集成城市选择框架</li>
+<li>支持首字母拼音查找城市、全拼查找城市、字体查找城市</li>
 <li>注意:请在info.plist文件里面配置key: NSLocationWhenInUseUsageDescription</li>
 <li>通过Modal窗口弹出[[YMCitySelect alloc] initWithDelegate:self]，需要传入代理控制器</li>
 <li>遵守协议:YMCitySelectDelegate</li>
