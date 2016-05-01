@@ -151,7 +151,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     _ym_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_ym_searchBar.frame), self.view.ym_width, self.view.ym_height - CGRectGetMaxY(_ym_searchBar.frame))];
     _ym_tableView.delegate = self;
     _ym_tableView.dataSource = self;
-    _ym_tableView.tintColor = [UIColor grayColor];
+    _ym_tableView.tintColor = [UIColor blackColor];
     [_ym_tableView registerClass:[YMTableViewCell class] forCellReuseIdentifier:reuseIdentifier];
     [self.view addSubview:_ym_tableView];
     if([_ym_tableView respondsToSelector:@selector(setSectionIndexColor:)]) {
@@ -286,20 +286,37 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     YMCityGroupsModel *model = _ym_ctiyGroups[section];
-    if ([model.title isEqualToString:@"热门"]) {
-        return @"中国热门城市";
-    }
-    if ([model.title isEqualToString:@"最近"]) {
-        return @"最近选择过的城市";
-    }
-    if ([model.title isEqualToString:@"定位"]) {
-        return @"定位的城市";
-    }
     return model.title;
 }
 
 - (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
     return [_ym_ctiyGroups valueForKeyPath:@"title"];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *ym_view = [[UIView alloc] init];
+    ym_view.backgroundColor = [UIColor colorWithRed:229/255.0 green:229/255.0 blue:229/255.0 alpha:1.0];
+    UILabel *ym_label = [[UILabel alloc] init];
+    ym_label.textAlignment = NSTextAlignmentLeft;
+    ym_label.textColor = [UIColor blackColor];
+    ym_label.font = [UIFont systemFontOfSize:16];
+    YMCityGroupsModel *cityGroupModel = _ym_ctiyGroups[section];
+    NSString *ym_title = cityGroupModel.title;
+    if ([cityGroupModel.title isEqualToString:@"热门"]) {
+        ym_title = @"中国热门城市";
+    }
+    if ([cityGroupModel.title isEqualToString:@"最近"]) {
+        ym_title = @"最近选择过的城市";
+    }
+    if ([cityGroupModel.title isEqualToString:@"定位"]) {
+        ym_title = @"定位的城市";
+    }
+    ym_label.text = ym_title;
+    [ym_label sizeToFit];
+    ym_label.ym_x = 10;
+    ym_label.ym_y = 5;
+    [ym_view addSubview:ym_label];
+    return ym_view;
 }
 
 #pragma mark - 选中cell
@@ -352,13 +369,11 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(CGFloat)ym_setcellHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat ym_height = 44;
     YMCityGroupsModel *cityGroupModel = _ym_ctiyGroups[indexPath.section];
+   CGFloat ym_w = ([UIScreen mainScreen].bounds.size.width - 72) / 3;
+    CGFloat ym_h = ym_w / 3;
     if (cityGroupModel.title.length > 1) {
         NSInteger count = cityGroupModel.cities.count;
-        if (count >3) {
-            ym_height = (count / 3 + (count % 3 == 0?0:1)) * 44 + 30;
-        }else{
-            ym_height = (count / 3 + (count % 3 == 0?0:1)) * 44 + 15;
-        }
+            ym_height = (count / 3 + (count % 3 == 0?0:1)) * (ym_h + 15) + 15;
     }
     return ym_height;
 }

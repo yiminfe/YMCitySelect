@@ -34,10 +34,23 @@
     _cityLabel.text = @"北京";
     _cityLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_cityLabel];
+    
+    UIButton *clearBtn = [[UIButton alloc] init];
+    [clearBtn setTitle:@"清理缓存" forState:UIControlStateNormal];
+    [clearBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [clearBtn sizeToFit];
+    clearBtn.center = self.view.center;
+    [self.view addSubview:clearBtn];
+    [clearBtn addTarget:self action:@selector(clearBtnClick) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)cityBtnClick:(UIButton *)btn{
     [self presentViewController:[[YMCitySelect alloc] initWithDelegate:self] animated:YES completion:nil];
+}
+
+-(void)clearBtnClick{
+    NSUserDefaults *clear = [NSUserDefaults standardUserDefaults];
+    [clear removeObjectForKey:@"ym_cityNames"];
 }
 
 - (void)didReceiveMemoryWarning {

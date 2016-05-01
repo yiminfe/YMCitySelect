@@ -31,12 +31,12 @@ static NSString *identifier = @"ym_collectionViewCell";
         self.selectionStyle = UITableViewCellSelectionStyleBlue;
         self.backgroundColor =[UIColor colorWithRed:243/255.0 green:243/255.0 blue:243/255.0 alpha:1.0];
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        ym_w = (self.ym_width - 77) / 3;
+        ym_w = ([UIScreen mainScreen].bounds.size.width - 72) / 3;
         CGFloat ym_h = ym_w / 3;
         layout.itemSize = CGSizeMake(ym_w, ym_h);
-        layout.sectionInset = UIEdgeInsetsMake(0, 8, 0, 8);
+        layout.sectionInset = UIEdgeInsetsMake(15, 15, 0, 0);
         layout.minimumLineSpacing = 15;
-        _ym_collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(5, 15, self.ym_width - 25, self.ym_height) collectionViewLayout:layout];
+        _ym_collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.ym_width - 27, self.ym_height) collectionViewLayout:layout];
         [_ym_collectionView registerClass:[YMCollectionViewCell
                                            class] forCellWithReuseIdentifier:identifier];
         _ym_collectionView.delegate = self;
