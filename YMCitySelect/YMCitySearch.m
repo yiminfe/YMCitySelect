@@ -28,7 +28,8 @@
 }
 
 -(void)ym_setCitys{
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cities.plist" ofType:nil];
+    NSBundle *bundle = [NSBundle bundleForClass:[YMCitySearch class]];
+    NSString *path = [bundle pathForResource:@"YMCitySelect.bundle/cities.plist" ofType:nil];
     NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
     _ym_cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
     [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
