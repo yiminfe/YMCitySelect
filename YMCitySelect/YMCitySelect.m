@@ -115,7 +115,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 
 -(void)ym_setCityGroups{
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cityGroups.plist" ofType:nil];
+    NSBundle *bundle = [NSBundle bundleForClass:[YMCitySelect class]];
+    NSString *path = [bundle pathForResource:@"YMCitySelect.bundle/cityGroups.plist" ofType:nil];
     NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
     _ym_ctiyGroups = [NSMutableArray arrayWithCapacity:tempArray.count];
     [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
