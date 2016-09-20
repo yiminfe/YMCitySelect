@@ -27,10 +27,14 @@
     }
     return self;
 }
+-(void)setCity:(YMCityModel *)city{
+    if ([city isKindOfClass:[NSString class]]) {
+        city = [YMCityModel cityWithName:(NSString *)city];
+    }
+    
+    _city = city;
 
--(void)setCityName:(NSString *)cityName{
-    _cityName = cityName;
-    _ym_cityLabel.text = cityName;
+    _ym_cityLabel.text = city.name;
     [_ym_cityLabel sizeToFit];
     if (_ym_cityLabel.ym_width > self.ym_width) {
         self.contentView.ym_width = _ym_cityLabel.ym_width;

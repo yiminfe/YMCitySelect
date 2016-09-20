@@ -74,7 +74,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     [self ym_setTableView];
     [self ym_setLocationManager];
     [self ym_setcationCityName];
+    
+     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ym_setLocationManager) name:@"ym_updateLocation" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ym_setSearchCityResult:) name:@"ym_searchCityResult" object:nil];
 }
 
@@ -83,6 +86,18 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     _ym_searchBar.placeholder = @"请输入城市名/拼音/首字母拼音";
     _ym_searchBar.delegate = self;
     [self.view addSubview:_ym_searchBar];
+    
+    
+    
+//    NSLayoutConstraint *topC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+//    NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+//    NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+//    NSLayoutConstraint *heightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:64];
+//    
+//    [_ym_searchBar addConstraints:@[topC,leftC,rightC,heightC]];
+    
+    
+    
 }
 
 -(void)ym_setNavView{
@@ -115,14 +130,42 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 
 -(void)ym_setCityGroups{
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cityGroups.plist" ofType:nil];
-    NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
-    _ym_ctiyGroups = [NSMutableArray arrayWithCapacity:tempArray.count];
-    [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        YMCityGroupsModel *cityGroupModel = [[YMCityGroupsModel alloc] init];
-        [cityGroupModel setValuesForKeysWithDictionary:obj];
-        [_ym_ctiyGroups addObject:cityGroupModel];
-    }];
+    
+    if (self.getGroupBlock) {
+        _ym_ctiyGroups = self.getGroupBlock().mutableCopy;
+        
+    }else{
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cityGroups.plist" ofType:nil];
+        NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
+        _ym_ctiyGroups = [NSMutableArray arrayWithCapacity:tempArray.count];
+        [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            YMCityGroupsModel *cityGroupModel = [[YMCityGroupsModel alloc] init];
+//            [cityGroupModel setValuesForKeysWithDictionary:obj];
+            cityGroupModel.title = [obj objectForKey:@"title"];
+            NSArray *array = [obj objectForKey:@"cities"];
+            NSMutableArray *cities = [NSMutableArray array];
+            for (NSDictionary *info in array ) {
+                
+                YMCityModel *city = [[YMCityModel alloc] init];;
+                if([info isKindOfClass:[NSDictionary class]]){
+                    [city setValuesForKeysWithDictionary:info];
+                    
+                }else if([info isKindOfClass:[NSString class]]){
+                    city.name = (NSString*)info;
+                    
+                }
+                
+                [cities addObject:city];
+            }
+            cityGroupModel.cities = cities;
+            
+            [_ym_ctiyGroups addObject:cityGroupModel];
+            
+        }];
+        
+    }
+    
 }
 -(void)ym_setCityNames{
     [self setUpCityNames];
@@ -130,9 +173,12 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         YMCityGroupsModel *ymcityGroupsModel = [[YMCityGroupsModel alloc] init];
         ymcityGroupsModel.title = @"最近";
         ymcityGroupsModel.cities = self.ym_cityNames;
-        _ym_selectCity.text = [NSString stringWithFormat:@"当前城市-%@",ymcityGroupsModel.cities[0]];
+        
+        YMCityModel *lastCity = ymcityGroupsModel.cities[0];
+        _ym_selectCity.text = [NSString stringWithFormat:@"当前城市-%@",lastCity.name ];
         [_ym_selectCity sizeToFit];
         _ym_selectCity.ym_centerX = _ym_navView.ym_centerX;
+        
         for (YMCityGroupsModel *tempModel in _ym_ctiyGroups) {
             if ([tempModel.title isEqualToString: ymcityGroupsModel.title]) {
                 tempModel.cities = ymcityGroupsModel.cities;
@@ -173,7 +219,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     YMCityGroupsModel *ymcityGroupsModel = [[YMCityGroupsModel alloc] init];
     ymcityGroupsModel.title = @"定位";
     _ym_locationcityArry = [NSMutableArray array];
-    [_ym_locationcityArry addObject:@"正在定位中..."];
+    [_ym_locationcityArry addObject:[YMCityModel cityWithName:@"正在定位中..."]];
     ymcityGroupsModel.cities = _ym_locationcityArry;
     [_ym_ctiyGroups insertObject:ymcityGroupsModel atIndex:0];
 }
@@ -218,7 +264,11 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 {
     searchBar.text = nil;
     self.ym_citySearch.view.hidden = YES;
+    
+    self.ym_citySearch.getGroupBlock = self.getGroupBlock;
+    
     [self ym_cancelBtnClick];
+    
 }
 
 -(void)ym_cancelBtnClick{
@@ -278,7 +328,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
         }
-        cell.textLabel.text = cityGroupModel.cities[indexPath.row];
+        
+        YMCityModel *city = cityGroupModel.cities[indexPath.row];;
+        cell.textLabel.text = city.name;
+        
     }
     return cell;
 }
@@ -323,37 +376,42 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     YMCityGroupsModel *model = _ym_ctiyGroups[indexPath.section];
-    NSString *cityName =  model.cities[indexPath.row];
-    [self ym_setSelectCityName:cityName];
+    YMCityModel *cityObj =  model.cities[indexPath.row];
+    [self ym_setSelectCity:cityObj];
 }
 
 #pragma mark YMTableViewCell自定义的代理方法
--(void)ymcollectionView:(UICollectionView *)collectionView didSelectItemAtCityName:(NSString *)cityName{
-    [self ym_setSelectCityName:cityName];
+-(void)ymcollectionView:(UICollectionView *)collectionView didSelectItemAtCity:(YMCityModel *)city
+{
+    
+    [self ym_setSelectCity:city];
 }
 
 #pragma mark 搜索城市的结果返回
 -(void)ym_setSearchCityResult:(NSNotification *)noti{
-    NSString *cityName = noti.userInfo[@"ym_searchCityResultKey"];
-    [self ym_setSelectCityName:cityName];
+    YMCityModel *city = noti.userInfo[@"ym_searchCityResultKey"];
+    [self ym_setSelectCity:city];
 }
 
 #pragma mark 保存最近城市逻辑判断
--(void)ym_setSelectCityName:(NSString *)cityName{
-    if ([self.ymDelegate respondsToSelector:@selector(ym_ymCitySelectCityName:)]) {
-        [self.ymDelegate ym_ymCitySelectCityName:cityName];
+-(void)ym_setSelectCity:(YMCityModel *)city
+{
+    if ([self.ymDelegate respondsToSelector:@selector(ym_ymCitySelectCity:)]) {
+        [self.ymDelegate ym_ymCitySelectCity:city];
     }
-    NSMutableArray *tempCityNames = [NSMutableArray array];
-    for (NSString *tempCityName in self.ym_cityNames) {
-        if ([tempCityName isEqualToString:cityName]) {
-            [tempCityNames addObject:tempCityName];
+    NSMutableArray *tempCitys = [NSMutableArray array];
+    for (YMCityModel *tempCity  in self.ym_cityNames) {
+        if ([tempCity.name isEqualToString:city.name]) {
+            [tempCitys addObject:tempCity];
         }
     }
-    [self.ym_cityNames removeObjectsInArray:tempCityNames];
+    
+    
+    [self.ym_cityNames removeObjectsInArray:tempCitys];
     if (self.ym_cityNames.count == 3) {
         [self.ym_cityNames removeLastObject];
     }
-    [self.ym_cityNames insertObject:cityName atIndex:0];
+    [self.ym_cityNames insertObject:city atIndex:0];
     [self addSaveCityNames];
     if (!_ym_citySearch) {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -380,7 +438,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
 #pragma mark - 保存最近城市到偏好设置
 -(void)addSaveCityNames{
-    [_ym_userDefaults setObject:_ym_cityNames forKey:@"ym_cityNames"];
+    [_ym_userDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:_ym_cityNames] forKey:@"ym_cityNames"];
     [_ym_userDefaults synchronize];
     [self ym_setCityNames];
     [_ym_tableView reloadData];
@@ -391,7 +449,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     if (!_ym_userDefaults) {
         _ym_userDefaults = [NSUserDefaults standardUserDefaults];
     }
-    self.ym_cityNames = [[_ym_userDefaults objectForKey:@"ym_cityNames"] mutableCopy];
+    self.ym_cityNames = [[NSKeyedUnarchiver unarchiveObjectWithData:[_ym_userDefaults objectForKey:@"ym_cityNames"]] mutableCopy];
 }
 
 #pragma mark 城市定位
@@ -403,7 +461,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     CLLocation *location = [[CLLocation alloc] initWithLatitude:ym_location.coordinate.latitude longitude:ym_location.coordinate.longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (placemarks.count == 0 || error) {
-            _ym_locationcityArry[0] = @"定位失败，请点击重试";
+            _ym_locationcityArry[0] = [YMCityModel cityWithName:@"定位失败，请点击重试"];
         }
         else{
             CLPlacemark *placemark = placemarks.lastObject;

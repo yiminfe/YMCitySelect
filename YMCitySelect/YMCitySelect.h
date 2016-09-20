@@ -9,17 +9,29 @@
 //  Copyright © 2016年 YiMin. All rights reserved.
 //
 #import <UIKit/UIKit.h>
+#import "YMCityModel.h"
+#import "YMCityGroupsModel.h"
+
 
 @protocol YMCitySelectDelegate <NSObject>
 
-- (void)ym_ymCitySelectCityName:(NSString *)cityName;
+- (void)ym_ymCitySelectCity:(YMCityModel *)city;
 
 @end
+
+
+typedef  NSArray<YMCityGroupsModel *>*(^GetDataSourceBlock)(void) ;
+
 
 @interface YMCitySelect : UIViewController
 
 -(instancetype)initWithDelegate:(id)targe;
 
 @property (nonatomic,weak) id<YMCitySelectDelegate> ymDelegate;
+
+///获取城市数据
+@property (copy,nonatomic) GetDataSourceBlock getGroupBlock;
+
+
 
 @end

@@ -58,8 +58,8 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)ym_ymCitySelectCityName:(NSString *)cityName{
-    _cityLabel.text = cityName;
+-(void)ym_ymCitySelectCity:(YMCityModel *)city {
+    _cityLabel.text = city.name;
 }
 
 /*

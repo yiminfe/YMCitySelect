@@ -13,4 +13,36 @@
 
 @implementation YMCityModel
 
++(instancetype)cityWithName:(NSString *)name
+{
+    YMCityModel *obj = [[YMCityModel alloc] init];
+    obj.name = name;
+    
+    return obj;
+}
+
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    
+    if (self == [super init]) {
+        _name = [aDecoder decodeObjectForKey:@"name"];
+        _pinYin = [aDecoder decodeObjectForKey:@"pinYin"];
+        _pinYinHead = [aDecoder decodeObjectForKey:@"pinYinHead"];
+        _districts = [aDecoder decodeObjectForKey:@"districts"];
+        
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    
+    [aCoder encodeObject:_name forKey:@"name"];
+    [aCoder encodeObject:_pinYin forKey:@"pinYin"];
+    
+    [aCoder encodeObject:_pinYinHead forKey:@"pinYinHead"];
+    [aCoder encodeObject:_districts forKey:@"districts"];
+    
+    
+}
+
 @end

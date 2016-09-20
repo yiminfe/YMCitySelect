@@ -10,10 +10,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YMCityModel.h"
 
 @protocol YMTableViewCellDelegate <NSObject>
 
--(void)ymcollectionView:(UICollectionView *)collectionView didSelectItemAtCityName:(NSString *)cityName;
+-(void)ymcollectionView:(UICollectionView *)collectionView didSelectItemAtCity :(YMCityModel *)city ;
 
 @end
 

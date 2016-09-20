@@ -28,6 +28,9 @@
 }
 
 -(void)ym_setCitys{
+    if (self.getGroupBlock) {
+        _ym_cityArray = self.getGroupBlock().mutableCopy;
+    }
     NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cities.plist" ofType:nil];
     NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
     _ym_cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
