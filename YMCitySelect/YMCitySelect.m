@@ -317,7 +317,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     static NSString *ID = @"ym_cell";
     YMCityGroupsModel *cityGroupModel = _ym_ctiyGroups[indexPath.section];
     UITableViewCell *cell;
-    if (cityGroupModel.title.length> 1) {
+    if (cityGroupModel.title.length  > 1) {
         YMTableViewCell *ym_cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
         ym_cell.citys = cityGroupModel.cities;
         ym_cell.ym_cellHeight = [self ym_setcellHeightForRowAtIndexPath:indexPath];

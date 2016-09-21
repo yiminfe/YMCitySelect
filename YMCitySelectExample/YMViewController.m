@@ -45,7 +45,54 @@
 }
 
 -(void)cityBtnClick:(UIButton *)btn{
-    [self presentViewController:[[YMCitySelect alloc] initWithDelegate:self] animated:YES completion:nil];
+    YMCitySelect *cityVC =  [[YMCitySelect alloc] initWithDelegate:self];
+    {
+        //手动传入
+        NSMutableArray *cityGroupArray = [NSMutableArray array ];
+        
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cityGroups.plist" ofType:nil];
+        NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
+        
+        
+        //手动传入
+        NSMutableArray *cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
+        NSMutableArray *_ym_ctiyGroups = [NSMutableArray arrayWithCapacity:tempArray.count];
+        
+        [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            YMCityGroupsModel *cityGroupModel = [[YMCityGroupsModel alloc] init];
+            //            [cityGroupModel setValuesForKeysWithDictionary:obj];
+            cityGroupModel.title = [obj objectForKey:@"title"];
+            NSArray *array = [obj objectForKey:@"cities"];
+            NSMutableArray *cities = [NSMutableArray array];
+            for (NSDictionary *info in array ) {
+                
+                YMCityModel *city = [[YMCityModel alloc] init];;
+                if([info isKindOfClass:[NSDictionary class]]){
+                    [city setValuesForKeysWithDictionary:info];
+                    
+                }else if([info isKindOfClass:[NSString class]]){
+                    city.name = (NSString*)info;
+                    
+                }
+                
+                [cities addObject:city];
+            }
+            cityGroupModel.cities = cities;
+            
+            [_ym_ctiyGroups addObject:cityGroupModel];
+            
+        }];
+        
+        cityVC.getGroupBlock = ^NSArray*(void){
+            return _ym_ctiyGroups;
+            
+        };
+
+        
+        
+    }
+    [self presentViewController:cityVC animated:YES completion:nil];
 }
 
 -(void)clearBtnClick{
