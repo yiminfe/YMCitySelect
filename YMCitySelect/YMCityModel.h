@@ -13,6 +13,8 @@
 
 @interface YMCityModel : NSObject<NSCoding>
 
+@property (nonatomic, copy) NSString *id;
+
 @property (nonatomic, copy) NSString *name;
 //chengdu
 @property (nonatomic, copy) NSString *pinYin;
