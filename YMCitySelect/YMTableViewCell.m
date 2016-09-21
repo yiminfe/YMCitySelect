@@ -66,7 +66,7 @@ static NSString *identifier = @"ym_collectionViewCell";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     YMCityModel *cityObj = self.citys[indexPath.item];
-    if ([cityObj.name isEqualToString:@"定位失败，请点击重试"]) {
+    if ([cityObj.name hasPrefix:@"定位失败"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_updateLocation" object:nil];
         YMCollectionViewCell *cell = (YMCollectionViewCell *)[_ym_collectionView cellForItemAtIndexPath:indexPath];
         
@@ -79,8 +79,15 @@ static NSString *identifier = @"ym_collectionViewCell";
     if ([cityObj.name isEqualToString:@"正在定位中..."]) {
         return;
     }
+    
+    
     if ([self.ym_cellDelegate respondsToSelector:@selector(ymcollectionView:didSelectItemAtCity :)]) {
+        
+        
         [self.ym_cellDelegate ymcollectionView:collectionView didSelectItemAtCity :cityObj ];
+        
+        
+        
     }
 }
 
@@ -118,7 +125,7 @@ static NSString *identifier = @"ym_collectionViewCell";
     cell.city = self.citys[index.row];
     
     YMCityModel *city = self.citys[index.row];
-    if (![city.name isEqualToString:@"定位失败，请点击重试"]) {
+    if (![city.name hasPrefix:@"定位失败"]) {
         cell.ym_cellWidth = ym_w;
     }
 }

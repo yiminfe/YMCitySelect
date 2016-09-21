@@ -18,6 +18,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface YMCitySelect ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,CLLocationManagerDelegate,YMTableViewCellDelegate>
+///最近
 @property (nonatomic,strong) NSMutableArray *ym_cityNames;
 @property (nonatomic,strong) YMCitySearch *ym_citySearch;
 
@@ -29,7 +30,12 @@
     UIButton *_ym_cover;
     UILabel *_ym_selectCity;
     UIView *_ym_navView;
+    
+    ///分组城市
     NSMutableArray *_ym_ctiyGroups;
+    ///全部城市,
+    NSMutableArray *_ym_allCtiys;
+    
     NSUserDefaults *_ym_userDefaults;
     CLLocationManager *_ym_locationManager;
     UIButton *_ym_locationCityName;
@@ -45,10 +51,35 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     return _ym_cityNames;
 }
 
+-(NSMutableArray *)ym_allCtiys{
+    if (!_ym_allCtiys) {
+        NSArray *group = _ym_ctiyGroups;
+        
+        _ym_allCtiys = [NSMutableArray array];
+        for (YMCityGroupsModel *groupObj in group) {
+            if (groupObj.cities == _ym_locationcityArry) {
+                
+            }else if ([groupObj.title isEqualToString:@"热门"]) {
+                
+            }
+            else if ([groupObj.title isEqualToString:@"最近"]) {
+                
+            }
+            else{
+                [_ym_allCtiys addObjectsFromArray:groupObj.cities];
+                
+            }
+            
+        }
+        
+    }
+    return _ym_allCtiys;
+}
+
 -(YMCitySearch *)ym_citySearch{
     if (!_ym_citySearch) {
                 YMCitySearch *ym_citySearchCtrl = [YMCitySearch new];
-                ym_citySearchCtrl.getGroupBlock = self.getGroupBlock;
+                ym_citySearchCtrl.ym_cityArray = [self ym_allCtiys];
 
                 [self addChildViewController:ym_citySearchCtrl];
                 [self.view addSubview:ym_citySearchCtrl.view];
@@ -251,7 +282,57 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         [_ym_locationManager requestWhenInUseAuthorization];
     }
     _ym_locationManager.delegate = self;
+    
+    
     [_ym_locationManager startUpdatingLocation];
+ 
+}
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    NSString *string = nil;
+    switch (status) {
+        case kCLAuthorizationStatusNotDetermined:
+        {
+            string = @"用户还未决定授权";
+            break;
+        }
+        case kCLAuthorizationStatusRestricted:
+        {
+            string =@"访问受限";
+            break;
+        }
+        case kCLAuthorizationStatusDenied:
+        {
+            // 类方法，判断是否开启定位服务
+            if ([CLLocationManager locationServicesEnabled]) {
+                string =@"定位服务开启，被拒绝" ;
+            } else {
+                string =@"定位服务关闭，不可用";
+            }
+            break;
+        }
+        case kCLAuthorizationStatusAuthorizedAlways:
+        {
+            NSLog(@"获得前后台授权");
+            break;
+        }
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+        {
+            NSLog(@"获得前台授权");
+            break;
+        }
+        default:
+            break;
+    }
+    
+    if (string ) {
+        
+        _ym_locationcityArry[0] = [YMCityModel cityWithName:[NSString stringWithFormat:@"定位失败:%@",string]];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_locationReloadData" object:nil];
+        
+    }
+    
 }
 
 -(void)ym_setcationCityName{
@@ -436,7 +517,35 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(void)ymcollectionView:(UICollectionView *)collectionView didSelectItemAtCity:(YMCityModel *)city
 {
     
-    [self ym_setSelectCity:city];
+    ///LOCATION
+    if ([_ym_locationcityArry containsObject:city]) {
+        ///find out
+        YMCityModel *orgCity = nil;
+        for (YMCityModel *city0 in [self ym_allCtiys]) {
+            if ([city0.name isEqualToString:city.name]) {
+                orgCity = city0 ;
+                break;
+            }
+        }
+        
+        ///找到的城市对象
+        if(orgCity){
+            [self ym_setSelectCity:orgCity];
+            
+        }else{
+            _ym_searchBar.text = city.name;
+        }
+       
+        
+    }else{
+        
+        ///
+        [self ym_setSelectCity:city];
+        
+    }
+    
+    
+    
 }
 
 #pragma mark 搜索城市的结果返回
@@ -514,6 +623,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 
 #pragma mark 城市定位
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
     CLLocation *ym_location =[locations firstObject];
@@ -528,7 +638,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
             CLPlacemark *placemark = placemarks.lastObject;
             if (placemark.locality) {
                 NSString * cityName = [placemark.locality substringWithRange:NSMakeRange(0, [placemark.locality length] - 1)];
-                _ym_locationcityArry[0] = cityName;
+                
+                YMCityModel *cityModel = [YMCityModel cityWithName:cityName];
+                
+                _ym_locationcityArry[0] = cityModel;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_locationReloadData" object:nil];
             }
         }

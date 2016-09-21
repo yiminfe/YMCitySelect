@@ -18,7 +18,6 @@
 @end
 
 @implementation YMCitySearch{
-    NSMutableArray *_ym_cityArray;
     NSMutableArray *_ym_resultArray;
 }
 
@@ -31,25 +30,25 @@
  
 
 -(void)ym_setCitys{
-    if (self.getGroupBlock) {
-        NSArray *groupArray = self.getGroupBlock();
+    if (self.ym_cityArray) {
+        
         NSMutableArray *array = [NSMutableArray array];
-        [groupArray enumerateObjectsUsingBlock:^(YMCityGroupsModel * obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj.cities enumerateObjectsUsingBlock:^(YMCityModel * city, NSUInteger idx, BOOL * _Nonnull stop) {
-                
-                if (city.pinYin.length==0) {
-                    city.pinYin = [city.name YM_Pinying_quanping];
-                }
-                
-                if (city.pinYinHead.length==0) {
-                    city.pinYinHead = [city.name YM_Pinying_head];
-                }
-                
-                [array addObject:city];
-                
-            }];
+        
+        [self.ym_cityArray enumerateObjectsUsingBlock:^(YMCityModel * city, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (city.pinYin.length==0) {
+                city.pinYin = [city.name YM_Pinying_quanping];
+            }
+            
+            if (city.pinYinHead.length==0) {
+                city.pinYinHead = [city.name YM_Pinying_head];
+            }
+            
+            [array addObject:city];
             
         }];
+            
+      
         _ym_cityArray = array ;
         
     }else{
@@ -104,7 +103,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     YMCityModel *cityModel = _ym_resultArray[indexPath.row];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_searchCityResult" object:nil userInfo:@{@"ym_searchCityResultKey": cityModel.name}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_searchCityResult" object:nil userInfo:@{@"ym_searchCityResultKey": cityModel}];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

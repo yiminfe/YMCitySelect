@@ -37,8 +37,8 @@
     _ym_cityLabel.text = city.name;
     [_ym_cityLabel sizeToFit];
     if (_ym_cityLabel.ym_width > self.ym_width) {
-        self.contentView.ym_width = _ym_cityLabel.ym_width;
-        self.ym_width = _ym_cityLabel.ym_width;
+        self.contentView.ym_width = _ym_cityLabel.ym_width + 15 ;
+        self.ym_width = _ym_cityLabel.ym_width + 15 ;
     }
     _ym_cityLabel.center = self.contentView.center;
 }

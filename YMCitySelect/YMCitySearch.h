@@ -16,6 +16,6 @@
 /** 搜索文字*/
 @property (nonatomic, copy) NSString *ym_searchText;
 ///获取城市数据
-@property (copy,nonatomic) GetDataSourceBlock getGroupBlock;
+@property (nonatomic, strong) NSMutableArray *ym_cityArray;
 
 @end
