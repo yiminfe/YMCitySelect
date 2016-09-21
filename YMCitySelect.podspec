@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
     s.name         = 'YMCitySelect'
-    s.version      = '1.0.2'
+    s.version      = '1.1.0'
     s.summary      = 'One line of code do city choice'
-    s.homepage     = 'https://github.com/iosdeveloperSVIP/YMCitySelect'
+    s.homepage     = 'https://github.com/timRabbit/YMCitySelect'
     s.license      = 'MIT'
     s.authors      = {'zhaoyimin' => 'iosdeveloper@vip.163.com'}
     s.platform     = :ios, '8.0'
