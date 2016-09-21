@@ -23,7 +23,6 @@
     [self.window makeKeyAndVisible];
     
     NSLog(@"%@",NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, 1));
-    
     return YES;
 }
 

@@ -83,6 +83,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ym_setSearchCityResult:) name:@"ym_searchCityResult" object:nil];
 }
 
+
+
 -(void)ym_setSearchBar{
     _ym_searchBar = [[YMSearchBar alloc] initWithFrame:CGRectMake(0, 44, self.view.ym_width, 64)];
     _ym_searchBar.placeholder = @"请输入城市名/拼音/首字母拼音";
@@ -90,14 +92,30 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     [self.view addSubview:_ym_searchBar];
 
     
+    NSLayoutConstraint *heightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:64];
+    
+    
+    NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0];
+    NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0];
+
     
     NSLayoutConstraint *topC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:0];
-    NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
-    NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-//    NSLayoutConstraint *heightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:64];
     
-//    [_ym_searchBar addConstraints:@[topC,leftC,rightC ]];
     
+    
+    
+    heightC.priority = 1000;
+    topC.priority = 1000;
+    leftC.priority = 1000;
+    rightC.priority = 1000;
+    
+    _ym_searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    ///约束失败
+//    [self.view addConstraints:@[topC,leftC,rightC,heightC  ]];
+    
+    
+//    [NSLayoutConstraint activateConstraints:@[topC,leftC,rightC  ]];
     
     
 }
