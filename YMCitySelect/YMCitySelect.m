@@ -107,8 +107,16 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     lineView.backgroundColor = [UIColor colorWithRed:171.0/255.0 green:172.0/255.0 blue:171.0/255.0 alpha:1.0];
     [_ym_navView addSubview:lineView];
     UIButton *closeBtn = [[UIButton alloc] init];
-    [closeBtn setImage:[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close_hl"] forState:UIControlStateNormal];
-    [closeBtn setImage:[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close"] forState:UIControlStateHighlighted];
+    if (self.closeBtnImage) {
+        [closeBtn setImage:self.closeBtnImage forState:UIControlStateNormal];
+//        [closeBtn setImage:self.closeBtnImage forState:UIControlStateHighlighted];
+        
+    }else{
+        [closeBtn setImage:[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close_hl"] forState:UIControlStateNormal];
+        [closeBtn setImage:[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close"] forState:UIControlStateHighlighted];
+        
+    }
+    
     [closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [closeBtn sizeToFit];
     closeBtn.ym_x = 5;
@@ -200,9 +208,18 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     _ym_tableView.tintColor = [UIColor blackColor];
     [_ym_tableView registerClass:[YMTableViewCell class] forCellReuseIdentifier:reuseIdentifier];
     [self.view addSubview:_ym_tableView];
+    
+    
+    if (self.indexSectionColor) {
+        _ym_tableView.sectionIndexColor = self.sectionIndexColor ;
+    }
+    
+    
     if([_ym_tableView respondsToSelector:@selector(setSectionIndexColor:)]) {
         _ym_tableView.sectionIndexBackgroundColor = [UIColor clearColor];
         _ym_tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+         
+        
     }
 }
 
@@ -348,10 +365,24 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *ym_view = [[UIView alloc] init];
-    ym_view.backgroundColor = [UIColor colorWithRed:229/255.0 green:229/255.0 blue:229/255.0 alpha:1.0];
+    
+    if( self.tableSectionBackColor ){
+        ym_view.backgroundColor = self.tableSectionBackColor;
+        
+    }else{
+        ym_view.backgroundColor = [UIColor colorWithRed:229/255.0 green:229/255.0 blue:229/255.0 alpha:1.0];
+        
+    }
     UILabel *ym_label = [[UILabel alloc] init];
     ym_label.textAlignment = NSTextAlignmentLeft;
-    ym_label.textColor = [UIColor blackColor];
+    if( self.tableSectionTextColor ){
+         ym_label.textColor =self.tableSectionTextColor;
+
+    }else{
+        ym_label.textColor = [UIColor blackColor];
+
+    }
+    
     ym_label.font = [UIFont systemFontOfSize:16];
     YMCityGroupsModel *cityGroupModel = _ym_ctiyGroups[section];
     NSString *ym_title = cityGroupModel.title;
