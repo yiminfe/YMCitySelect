@@ -97,7 +97,7 @@
 
 -(void)clearBtnClick{
     NSUserDefaults *clear = [NSUserDefaults standardUserDefaults];
-    [clear removeObjectForKey:@"ym_cityNames"];
+    [clear removeObjectForKey:@"ym_cityNames_new"];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -490,7 +490,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
 #pragma mark - 保存最近城市到偏好设置
 -(void)addSaveCityNames{
-    [_ym_userDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:_ym_cityNames] forKey:@"ym_cityNames"];
+    [_ym_userDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:_ym_cityNames] forKey:@"ym_cityNames_new"];
     [_ym_userDefaults synchronize];
     [self ym_setCityNames];
     [_ym_tableView reloadData];
@@ -502,13 +502,13 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         _ym_userDefaults = [NSUserDefaults standardUserDefaults];
     }
     
-    NSData *data = [_ym_userDefaults objectForKey:@"ym_cityNames"];
+    NSData *data = [_ym_userDefaults objectForKey:@"ym_cityNames_new"];
     ///兼容之前的 strign
     if(data && ![data isKindOfClass:[NSArray class]]){
         self.ym_cityNames = [[NSKeyedUnarchiver unarchiveObjectWithData:data] mutableCopy];
 
     }else{
-            [_ym_userDefaults removeObjectForKey:@"ym_cityNames"];
+            [_ym_userDefaults removeObjectForKey:@"ym_cityNames_new"];
     }
     
 }
