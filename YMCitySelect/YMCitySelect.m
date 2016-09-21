@@ -168,7 +168,15 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         
     }
     
-    [closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    if (self.closeBtnAct && self.closeBtnOwner ) {
+        [closeBtn addTarget:self.closeBtnOwner action:self.closeBtnAct forControlEvents:UIControlEventTouchUpInside];
+
+    }else{
+        [closeBtn addTarget:self.closeBtnOwner action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    
+    
     [closeBtn sizeToFit];
     closeBtn.ym_x = 5;
     closeBtn.ym_centerY = _ym_navView.ym_centerY + 10;
@@ -534,6 +542,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
             
         }else{
             _ym_searchBar.text = city.name;
+            [_ym_searchBar becomeFirstResponder];
+            
         }
        
         
