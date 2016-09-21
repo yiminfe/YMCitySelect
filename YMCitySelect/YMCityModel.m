@@ -21,10 +21,10 @@
     return obj;
 }
 
-
 - (instancetype)initWithCoder:(NSCoder *)aDecoder{
     
     if (self == [super init]) {
+        _id = [aDecoder decodeObjectForKey:@"id"];
         _name = [aDecoder decodeObjectForKey:@"name"];
         _pinYin = [aDecoder decodeObjectForKey:@"pinYin"];
         _pinYinHead = [aDecoder decodeObjectForKey:@"pinYinHead"];
@@ -36,6 +36,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder{
     
+    [aCoder encodeObject:_id forKey:@"id"];
     [aCoder encodeObject:_name forKey:@"name"];
     [aCoder encodeObject:_pinYin forKey:@"pinYin"];
     
