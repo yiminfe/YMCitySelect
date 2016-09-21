@@ -109,7 +109,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     leftC.priority = 1000;
     rightC.priority = 1000;
     
-    _ym_searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+//    _ym_searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     
     ///约束失败
 //    [self.view addConstraints:@[topC,leftC,rightC,heightC  ]];
@@ -501,7 +501,16 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     if (!_ym_userDefaults) {
         _ym_userDefaults = [NSUserDefaults standardUserDefaults];
     }
-    self.ym_cityNames = [[NSKeyedUnarchiver unarchiveObjectWithData:[_ym_userDefaults objectForKey:@"ym_cityNames"]] mutableCopy];
+    
+    NSData *data = [_ym_userDefaults objectForKey:@"ym_cityNames"];
+    ///兼容之前的 strign
+    if(data && ![data isKindOfClass:[NSArray class]]){
+        self.ym_cityNames = [[NSKeyedUnarchiver unarchiveObjectWithData:data] mutableCopy];
+
+    }else{
+            [_ym_userDefaults removeObjectForKey:@"ym_cityNames"];
+    }
+    
 }
 
 #pragma mark 城市定位
@@ -527,5 +536,17 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     }];
 
 }
+#pragma mark 旋转
+- (BOOL)shouldAutorotate {
+    return  NO;
+}
+
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+//    return self.topViewController.supportedInterfaceOrientations;
+//}
+//
+//- (UIStatusBarStyle)preferredStatusBarStyle {
+//    return self.topViewController.preferredStatusBarStyle;
+//}
 
 @end
