@@ -210,7 +210,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     [self.view addSubview:_ym_tableView];
     
     
-    if (self.indexSectionColor) {
+    if (self.sectionIndexColor) {
         _ym_tableView.sectionIndexColor = self.sectionIndexColor ;
     }
     
