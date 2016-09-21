@@ -11,6 +11,7 @@
 
 #import "YMCitySearch.h"
 #import "YMCityModel.h"
+#import "NSString+YM_Pinying.h"
 
 @interface YMCitySearch ()
 
@@ -27,18 +28,44 @@
     _ym_resultArray = [NSMutableArray array];
 }
 
+ 
+
 -(void)ym_setCitys{
     if (self.getGroupBlock) {
-        _ym_cityArray = self.getGroupBlock().mutableCopy;
+        NSArray *groupArray = self.getGroupBlock();
+        NSMutableArray *array = [NSMutableArray array];
+        [groupArray enumerateObjectsUsingBlock:^(YMCityGroupsModel * obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj.cities enumerateObjectsUsingBlock:^(YMCityModel * city, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                if (city.pinYin.length==0) {
+                    city.pinYin = [city.name YM_Pinying_quanping];
+                }
+                
+                if (city.pinYinHead.length==0) {
+                    city.pinYinHead = [city.name YM_Pinying_head];
+                }
+                
+                [array addObject:city];
+                
+            }];
+            
+        }];
+        _ym_cityArray = array ;
+        
+    }else{
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cities.plist" ofType:nil];
+        NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
+        _ym_cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
+        [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            YMCityModel *cityModel = [[YMCityModel alloc] init];
+//            [cityModel setValuesForKeysWithDictionary:obj];
+            cityModel.name = [obj objectForKey:@"name"];
+            
+            [_ym_cityArray addObject:cityModel];
+            
+        }];
     }
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cities.plist" ofType:nil];
-    NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
-    _ym_cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
-    [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        YMCityModel *cityModel = [[YMCityModel alloc] init];
-        [cityModel setValuesForKeysWithDictionary:obj];
-        [_ym_cityArray addObject:cityModel];
-    }];
+    
 }
 
 -(void)setYm_searchText:(NSString *)ym_searchText{

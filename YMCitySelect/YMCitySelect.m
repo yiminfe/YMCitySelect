@@ -48,6 +48,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(YMCitySearch *)ym_citySearch{
     if (!_ym_citySearch) {
                 YMCitySearch *ym_citySearchCtrl = [YMCitySearch new];
+                ym_citySearchCtrl.getGroupBlock = self.getGroupBlock;
+
                 [self addChildViewController:ym_citySearchCtrl];
                 [self.view addSubview:ym_citySearchCtrl.view];
         ym_citySearchCtrl.view.frame = CGRectMake(0, 64, self.view.ym_width, self.view.ym_height - 64);
@@ -86,15 +88,15 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     _ym_searchBar.placeholder = @"请输入城市名/拼音/首字母拼音";
     _ym_searchBar.delegate = self;
     [self.view addSubview:_ym_searchBar];
+
     
     
-    
-//    NSLayoutConstraint *topC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:0];
-//    NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
-//    NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+    NSLayoutConstraint *topC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+    NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+    NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
 //    NSLayoutConstraint *heightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:64];
-//    
-//    [_ym_searchBar addConstraints:@[topC,leftC,rightC,heightC]];
+    
+//    [_ym_searchBar addConstraints:@[topC,leftC,rightC ]];
     
     
     
@@ -151,6 +153,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
             YMCityGroupsModel *cityGroupModel = [[YMCityGroupsModel alloc] init];
 //            [cityGroupModel setValuesForKeysWithDictionary:obj];
             cityGroupModel.title = [obj objectForKey:@"title"];
+            
+            
             NSArray *array = [obj objectForKey:@"cities"];
             NSMutableArray *cities = [NSMutableArray array];
             for (NSDictionary *info in array ) {
@@ -282,7 +286,6 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     searchBar.text = nil;
     self.ym_citySearch.view.hidden = YES;
     
-    self.ym_citySearch.getGroupBlock = self.getGroupBlock;
     
     [self ym_cancelBtnClick];
     
