@@ -93,6 +93,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     self = [super init];
     if (self) {
         self.ymDelegate = targe;
+        self.textColor = [UIColor blackColor];
+
     }
     return self;
 }
@@ -102,7 +104,6 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.textColor = [UIColor blackColor];
     
     
     [self ym_setSearchBar];
