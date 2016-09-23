@@ -99,7 +99,12 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    self.textColor = [UIColor blackColor];
+    
+    
     [self ym_setSearchBar];
     [self ym_setNavView];
     [self ym_setCityGroups];
@@ -449,11 +454,16 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         ym_cell.citys = cityGroupModel.cities;
         ym_cell.ym_cellHeight = [self ym_setcellHeightForRowAtIndexPath:indexPath];
         ym_cell.ym_cellDelegate = self;
+        
+        ym_cell.textColor = self.textColor;
+        
         return ym_cell;
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:ID];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+            cell.textLabel.textColor = self.textColor;
+            
         }
         
         YMCityModel *city = cityGroupModel.cities[indexPath.row];;

@@ -27,6 +27,18 @@
     }
     return self;
 }
+-(void)setTextColor:(UIColor *)textColor
+{
+    if(_textColor == textColor){
+        return;
+    }
+    
+    _textColor = textColor;
+    _ym_cityLabel.textColor = _textColor;
+
+    
+    
+}
 -(void)setCity:(YMCityModel *)city{
     if ([city isKindOfClass:[NSString class]]) {
         city = [YMCityModel cityWithName:(NSString *)city];

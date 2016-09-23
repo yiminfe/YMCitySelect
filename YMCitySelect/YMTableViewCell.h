@@ -25,5 +25,6 @@
 @property (nonatomic,assign) CGFloat ym_cellHeight;
 
 @property (nonatomic,weak) id<YMTableViewCellDelegate> ym_cellDelegate;
+@property (strong,nonatomic) UIColor *textColor;
 
 @end

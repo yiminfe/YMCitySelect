@@ -17,5 +17,6 @@
 @property (nonatomic,copy) YMCityModel *city;
 
 @property (nonatomic,assign) CGFloat ym_cellWidth;
+@property (strong,nonatomic) UIColor *textColor;
 
 @end

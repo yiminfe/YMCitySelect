@@ -60,6 +60,7 @@ static NSString *identifier = @"ym_collectionViewCell";
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     YMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.city = self.citys[indexPath.item];
+    cell.textColor = self.textColor;
     return cell;
 }
 

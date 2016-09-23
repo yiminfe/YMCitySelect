@@ -43,5 +43,6 @@ typedef  NSArray<YMCityGroupsModel *>*(^GetDataSourceBlock)(void) ;
 //table section背景的颜色
 @property (strong,nonatomic) UIColor *tableSectionBackColor;
 
+@property (strong,nonatomic) UIColor *textColor;
 
 @end
