@@ -260,18 +260,17 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 -(void)addConstraint
 {
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    //search
     {
-//        return;
-//        UIView *view =  _ym_searchBar;
-        
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(20, 300, 200, 200)];
-        view.backgroundColor = [UIColor redColor];
-        
+ 
+        UIView *view =  _ym_searchBar;
+    
         [self.view addSubview:view];
         
         
         view.translatesAutoresizingMaskIntoConstraints = NO;
-        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+//        self.view .translatesAutoresizingMaskIntoConstraints = NO;
        
         
         NSLayoutConstraint *heightC =
@@ -330,14 +329,79 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         widthC.active = YES;
         
         
+        ///约束失败
+        [self.view addConstraints:@[ topC,leftC,rightC ]];
+        
+    
+     
+
+    }
+    //TABLE
+    {
+        
+        UIView *view =  _ym_tableView;
+        
+        [self.view addSubview:view];
+        
+        
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        //        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+      
+        
+        
+        NSLayoutConstraint *leftC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1
+                                      constant:0];
+        NSLayoutConstraint *rightC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1
+                                      constant:0];
+        
+        
+        
+        NSLayoutConstraint *topC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:_ym_searchBar
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1
+                                      constant:0];
+        
+        
+        
+        NSLayoutConstraint *bottomC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1
+                                      constant:0];
+        leftC.active = YES;
+        rightC.active = YES;
+        
+        topC.active = YES;
+        bottomC.active = YES;
+        
         
         ///约束失败
-        [self.view addConstraints:@[ widthC ]];
-    
-    
-//        [NSLayoutConstraint activateConstraints:@[ leftC,rightC ,widthC ]];
-    
-
+        [self.view addConstraints:@[ topC,leftC,rightC,bottomC ]];
+        
+        
+        
+        
     }
 }
 -(void)ym_setLocationManager{
@@ -507,8 +571,9 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         ym_cell.ym_cellDelegate = self;
         
         ym_cell.textColor = self.textColor;
-        
+       
         return ym_cell;
+        
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:ID];
         if (cell == nil) {
@@ -659,7 +724,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(CGFloat)ym_setcellHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat ym_height = 44;
     YMCityGroupsModel *cityGroupModel = _ym_ctiyGroups[indexPath.section];
-   CGFloat ym_w = ([UIScreen mainScreen].bounds.size.width - 72) / 3;
+   CGFloat ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
     CGFloat ym_h = ym_w / 3;
     if (cityGroupModel.title.length > 1) {
         NSInteger count = cityGroupModel.cities.count;
@@ -722,7 +787,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 #pragma mark 旋转
 - (BOOL)shouldAutorotate {
-    return  NO;
+    return  YES;
 }
 
 //- (UIInterfaceOrientationMask)supportedInterfaceOrientations {

@@ -23,15 +23,32 @@
 }
 
 static NSString *identifier = @"ym_collectionViewCell";
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+//    self.ym_width = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
+    
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)_ym_collectionView.collectionViewLayout;
+    ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
+    CGFloat ym_h = ym_w / 3;
+    layout.itemSize = CGSizeMake(ym_w, ym_h);
+   
+    _ym_collectionView.frame = CGRectMake(0, 0, self.ym_width - 27, self.ym_height) ;
 
+    [_ym_collectionView reloadData];
+    
+}
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.ym_width = [UIScreen mainScreen].bounds.size.width;
+        self.ym_width = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
+        
         self.selectionStyle = UITableViewCellSelectionStyleBlue;
         self.backgroundColor =[UIColor colorWithRed:243/255.0 green:243/255.0 blue:243/255.0 alpha:1.0];
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        ym_w = ([UIScreen mainScreen].bounds.size.width - 72) / 3;
+        ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
+        
         CGFloat ym_h = ym_w / 3;
         layout.itemSize = CGSizeMake(ym_w, ym_h);
         layout.sectionInset = UIEdgeInsetsMake(15, 15, 0, 0);
