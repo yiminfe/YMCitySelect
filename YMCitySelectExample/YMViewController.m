@@ -92,7 +92,7 @@
         
         
     }
-    [self presentViewController:cityVC animated:YES completion:nil];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:cityVC] animated:YES completion:nil];
 }
 
 -(void)clearBtnClick{

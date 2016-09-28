@@ -28,8 +28,8 @@
     YMSearchBar *_ym_searchBar;
     UITableView *_ym_tableView;
     UIButton *_ym_cover;
-    UILabel *_ym_selectCity;
-    UIView *_ym_navView;
+   // UILabel *_ym_selectCity;
+//    UIView *_ym_navView;
     
     ///分组城市
     NSMutableArray *_ym_ctiyGroups;
@@ -105,16 +105,18 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     self.view.backgroundColor = [UIColor whiteColor];
     
     
-    
-    [self ym_setSearchBar];
     [self ym_setNavView];
+    [self ym_setSearchBar];
+    [self ym_setTableView];
+
     [self ym_setCityGroups];
     [self ym_setCityNames];
-    [self ym_setTableView];
+
     [self ym_setLocationManager];
     [self ym_setcationCityName];
     
-     
+    [self addConstraint];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ym_setLocationManager) name:@"ym_updateLocation" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ym_setSearchCityResult:) name:@"ym_searchCityResult" object:nil];
@@ -129,40 +131,12 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     [self.view addSubview:_ym_searchBar];
 
     
-    NSLayoutConstraint *heightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:64];
-    
-    
-    NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0];
-    NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0];
-
-    
-    NSLayoutConstraint *topC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:0];
-    
-    
-    
-    
-    heightC.priority = 1000;
-    topC.priority = 1000;
-    leftC.priority = 1000;
-    rightC.priority = 1000;
-    
-//    _ym_searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    ///约束失败
-//    [self.view addConstraints:@[topC,leftC,rightC,heightC  ]];
-    
-    
-//    [NSLayoutConstraint activateConstraints:@[topC,leftC,rightC  ]];
-    
     
 }
 
 -(void)ym_setNavView{
-    _ym_navView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 64)];
-    _ym_navView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 63.5, _ym_navView.ym_width, 0.5)];
-    lineView.backgroundColor = [UIColor colorWithRed:171.0/255.0 green:172.0/255.0 blue:171.0/255.0 alpha:1.0];
-    [_ym_navView addSubview:lineView];
+  
+    
     UIButton *closeBtn = [[UIButton alloc] init];
     if (self.closeBtnImage) {
         [closeBtn setImage:self.closeBtnImage forState:UIControlStateNormal];
@@ -185,17 +159,13 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     
     [closeBtn sizeToFit];
     closeBtn.ym_x = 5;
-    closeBtn.ym_centerY = _ym_navView.ym_centerY + 10;
-    [_ym_navView addSubview:closeBtn];
-    _ym_selectCity = [[UILabel alloc] init];
-    _ym_selectCity.text = @"选择城市";
-    _ym_selectCity.font = [UIFont fontWithName:@"HelVetica-Bold" size:16];
-    _ym_selectCity.textColor = [UIColor blackColor];
-    [_ym_selectCity sizeToFit];
-    _ym_selectCity.ym_centerX = _ym_navView.ym_centerX;
-    _ym_selectCity.ym_centerY = _ym_navView.ym_centerY + 10;
-    [_ym_navView addSubview:_ym_selectCity];
-    [self.view addSubview:_ym_navView];
+    
+    
+    self.navigationItem.title  = @"选择城市";
+    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:closeBtn];
+    
+    
+    
 }
 
 -(void)closeBtnClick{
@@ -250,9 +220,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         ymcityGroupsModel.cities = self.ym_cityNames;
         
         YMCityModel *lastCity = ymcityGroupsModel.cities[0];
-        _ym_selectCity.text = [NSString stringWithFormat:@"当前城市-%@",lastCity.name ];
-        [_ym_selectCity sizeToFit];
-        _ym_selectCity.ym_centerX = _ym_navView.ym_centerX;
+        self.navigationItem.title  = [NSString stringWithFormat:@"当前城市-%@",lastCity.name ];
+        
         
         for (YMCityGroupsModel *tempModel in _ym_ctiyGroups) {
             if ([tempModel.title isEqualToString: ymcityGroupsModel.title]) {
@@ -289,7 +258,39 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         
     }
 }
+-(void)addConstraint
+{
+    {
+        return;
+        NSLayoutConstraint *heightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:64];
+        
+        
+        NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+        NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+        
+        
+        NSLayoutConstraint *topC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+        
+        
+        
+        
+        heightC.active = YES;
+        topC.active = YES;
+        leftC.active = YES;
+        rightC.active = YES;
+        
+        _ym_searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+        
+        ///约束失败
+        [self.view addConstraints:@[ leftC,rightC  ]];
+    
+    
+        [NSLayoutConstraint activateConstraints:@[ leftC,rightC  ]];
+    
 
+    }
+}
 -(void)ym_setLocationManager{
     _ym_locationManager = [CLLocationManager new];
     if ([_ym_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
@@ -365,7 +366,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     }
     [self ym_setCover];
     [UIView animateWithDuration:0.5 animations:^{
-        _ym_navView.ym_y = -64;
+    //    _ym_navView.ym_y = -64;
         _ym_searchBar.ym_y = 0;
         _ym_tableView.ym_y = 64;
         _ym_tableView.ym_height = self.view.ym_height - 64;
@@ -373,7 +374,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         [_ym_searchBar setShowsCancelButton:YES animated:YES];
         
     } completion:^(BOOL finished) {
-        _ym_navView.hidden = YES;
+//        _ym_navView.hidden = YES;
     }];
 }
 
@@ -405,10 +406,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 
 -(void)ym_cancelBtnClick{
-    _ym_navView.hidden = NO;
+//    _ym_navView.hidden = NO;
     [UIView animateWithDuration:0.5 animations:^{
         _ym_cover.hidden = YES;
-        _ym_navView.ym_y = 0;
+//        _ym_navView.ym_y = 0;
         _ym_searchBar.ym_y = 44;
         [_ym_searchBar setShowsCancelButton:NO animated:YES];
         _ym_tableView.ym_y = CGRectGetMaxY(_ym_searchBar.frame);

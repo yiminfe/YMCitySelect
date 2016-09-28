@@ -20,8 +20,10 @@
     
     // 查出最后一个,的范围
     NSRange range = [str rangeOfString:@"," options:NSBackwardsSearch];
+
+    if(range.location != NSNotFound)
     // 删掉最后一个,
-    [str deleteCharactersInRange:range];
+        [str deleteCharactersInRange:range];
     
     return str;
 }
@@ -46,8 +48,10 @@
     
     // 查出最后一个,的范围
     NSRange range = [str rangeOfString:@"," options:NSBackwardsSearch];
+
+    if(range.location != NSNotFound)
     // 删掉最后一个,
-    [str deleteCharactersInRange:range];
+        [str deleteCharactersInRange:range];
     
     return str;
 }
