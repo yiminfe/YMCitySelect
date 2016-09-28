@@ -24,6 +24,9 @@
         _ym_cityLabel = [[UILabel alloc] init];
         _ym_cityLabel.textColor = [UIColor blackColor];
         [self.contentView addSubview:_ym_cityLabel];
+        
+        _ym_cityLabel.textAlignment = NSTextAlignmentCenter;
+        
     }
     return self;
 }
@@ -55,11 +58,15 @@
     _ym_cityLabel.center = self.contentView.center;
 }
 
--(void)setYm_cellWidth:(CGFloat)ym_cellWidth{
-    _ym_cellWidth = ym_cellWidth;
-    self.contentView.ym_width = ym_cellWidth;
-    self.ym_width = _ym_cellWidth;
-    _ym_cityLabel.center = self.contentView.center;
+//-(void)setYm_cellWidth:(CGFloat)ym_cellWidth{
+//    _ym_cellWidth = ym_cellWidth;
+//    self.contentView.ym_width = ym_cellWidth;
+//    self.ym_width = _ym_cellWidth;
+//    _ym_cityLabel.center = self.contentView.center;
+//}
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    _ym_cityLabel.frame = self.bounds;
 }
-
 @end

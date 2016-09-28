@@ -18,8 +18,11 @@
     UILabel *_cityLabel;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+     
     self.title = @"选择城市";
     self.view.backgroundColor = [UIColor whiteColor];
     UIButton *cityBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 94, 100, 30)];
@@ -42,6 +45,8 @@
     clearBtn.center = self.view.center;
     [self.view addSubview:clearBtn];
     [clearBtn addTarget:self action:@selector(clearBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
 
 -(void)cityBtnClick:(UIButton *)btn{
@@ -89,10 +94,11 @@
             
         };
 
-        
-        
     }
+    
     [self presentViewController:[[UINavigationController alloc] initWithRootViewController:cityVC] animated:YES completion:nil];
+    
+    
 }
 
 -(void)clearBtnClick{
