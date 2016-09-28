@@ -18,8 +18,97 @@
     UILabel *_cityLabel;
 }
 
+///测试旧工程 对 autolay 的约束效果,无效,求 bug
+-(void)addConstraint
+{
+    {
+        //        return;
+        //        UIView *view =  _ym_searchBar;
+        
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(20, 300, 200, 200)];
+        view.backgroundColor = [UIColor redColor];
+        
+        [self.view addSubview:view];
+        
+        
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        
+        
+        NSLayoutConstraint *heightC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1
+                                      constant:44];
+        NSLayoutConstraint *widthC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeWidth
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeWidth
+                                    multiplier:1
+                                      constant:-50];
+        
+        
+        NSLayoutConstraint *leftC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1
+                                      constant:50];
+        NSLayoutConstraint *rightC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1
+                                      constant:50];
+        
+        
+        
+        NSLayoutConstraint *topC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1
+                                      constant:100];
+        
+        
+        
+        [self.view addConstraints:@[ leftC,widthC,topC,heightC ]];
+        [NSLayoutConstraint activateConstraints:@[ leftC,widthC,topC,heightC ]];
+        
+        //        heightC.active = YES;
+        //        topC.active = YES;
+        //        leftC.active = YES;
+        //        rightC.active = YES;
+        //        widthC.active = YES;
+        
+        
+        return;
+        ///约束失败
+        //
+        
+        //        [NSLayoutConstraint activateConstraints:@[ leftC,rightC ,widthC ]];
+        
+        
+    }
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self addConstraint];
+    
     self.title = @"选择城市";
     self.view.backgroundColor = [UIColor whiteColor];
     UIButton *cityBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 94, 100, 30)];
@@ -42,6 +131,8 @@
     clearBtn.center = self.view.center;
     [self.view addSubview:clearBtn];
     [clearBtn addTarget:self action:@selector(clearBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
 
 -(void)cityBtnClick:(UIButton *)btn{

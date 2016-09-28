@@ -261,15 +261,64 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(void)addConstraint
 {
     {
-        return;
-        NSLayoutConstraint *heightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:64];
+//        return;
+//        UIView *view =  _ym_searchBar;
+        
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(20, 300, 200, 200)];
+        view.backgroundColor = [UIColor redColor];
+        
+        [self.view addSubview:view];
         
         
-        NSLayoutConstraint *leftC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
-        NSLayoutConstraint *rightC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+       
+        
+        NSLayoutConstraint *heightC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1
+                                      constant:44];
+        NSLayoutConstraint *widthC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeWidth
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeWidth
+                                    multiplier:1
+                                      constant:0];
+
+        
+        NSLayoutConstraint *leftC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1
+                                      constant:0];
+        NSLayoutConstraint *rightC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1
+                                      constant:0];
         
         
-        NSLayoutConstraint *topC = [NSLayoutConstraint constraintWithItem:_ym_searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+        
+        NSLayoutConstraint *topC =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1
+                                      constant:0];
         
         
         
@@ -278,15 +327,15 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         topC.active = YES;
         leftC.active = YES;
         rightC.active = YES;
+        widthC.active = YES;
         
-        _ym_searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+        
         
         ///约束失败
-        [self.view addConstraints:@[ leftC,rightC  ]];
+        [self.view addConstraints:@[ widthC ]];
     
     
-        [NSLayoutConstraint activateConstraints:@[ leftC,rightC  ]];
+//        [NSLayoutConstraint activateConstraints:@[ leftC,rightC ,widthC ]];
     
 
     }
