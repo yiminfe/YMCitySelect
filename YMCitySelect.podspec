@@ -23,5 +23,5 @@ Pod::Spec.new do |s|
    
   #  sp.dependency 'FontIcon'
    # sp.prefix_header_contents = '#import "EasyIOS.h"'
-  end
+#  end
 end
