@@ -73,11 +73,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "YMCitySelect/YMCitySelect.m"
-            timestampString = "496741478.083999"
+            timestampString = "496744453.894733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "561"
+            endingLineNumber = "561"
             landmarkName = "-searchBarTextDidBeginEditing:"
             landmarkType = "7">
          </BreakpointContent>

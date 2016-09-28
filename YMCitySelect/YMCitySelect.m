@@ -83,10 +83,80 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
                 [self addChildViewController:ym_citySearchCtrl];
                 [self.view addSubview:ym_citySearchCtrl.view];
-        ym_citySearchCtrl.view.frame = CGRectMake(0, 64, self.view.ym_width, self.view.ym_height - 64);
+                ym_citySearchCtrl.view.frame = CGRectMake(0, 64, self.view.ym_width, self.view.ym_height - 64);
                 _ym_citySearch = ym_citySearchCtrl;
+        //约束
+        {
+            
+            UIView *view =  _ym_citySearch.view;
+            
+            [self.view addSubview:view];
+            
+            
+            view.translatesAutoresizingMaskIntoConstraints = NO;
+            //        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+            
+            
+           
+            
+            
+            NSLayoutConstraint *leftC =
+            [NSLayoutConstraint constraintWithItem:view
+                                         attribute:NSLayoutAttributeLeft
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:self.view
+                                         attribute:NSLayoutAttributeLeft
+                                        multiplier:1
+                                          constant:0];
+            NSLayoutConstraint *rightC =
+            [NSLayoutConstraint constraintWithItem:view
+                                         attribute:NSLayoutAttributeRight
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:self.view
+                                         attribute:NSLayoutAttributeRight
+                                        multiplier:1
+                                          constant:0];
+            
+            
+            
+            NSLayoutConstraint *topC =
+            [NSLayoutConstraint constraintWithItem:view
+                                         attribute:NSLayoutAttributeTop
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:_ym_searchBar
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1
+                                          constant:0];
+            
+            
+            NSLayoutConstraint *bottomC =
+            [NSLayoutConstraint constraintWithItem:view
+                                         attribute:NSLayoutAttributeBottom
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:self.view
+                                         attribute:NSLayoutAttributeBottom
+                                        multiplier:1
+                                          constant:0];
+            
+            
+            bottomC.active = YES;
+            topC.active = YES;
+            leftC.active = YES;
+            rightC.active = YES;
+            
+            
+            ///约束
+            [self.view addConstraints:@[ topC,leftC,rightC,bottomC ]];
+            
+            
+            
+            
+        }
+        
             }
+    
             return _ym_citySearch;
+    
 }
 
 -(instancetype)initWithDelegate:(id)targe{
@@ -128,6 +198,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     _ym_searchBar = [[YMSearchBar alloc] initWithFrame:CGRectMake(0, 44, self.view.ym_width, 64)];
     _ym_searchBar.placeholder = @"请输入城市名/拼音/首字母拼音";
     _ym_searchBar.delegate = self;
+    
     [self.view addSubview:_ym_searchBar];
 
     
@@ -152,7 +223,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         [closeBtn addTarget:self.closeBtnOwner action:self.closeBtnAct forControlEvents:UIControlEventTouchUpInside];
 
     }else{
-        [closeBtn addTarget:self.closeBtnOwner action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
 
     }
     
@@ -165,11 +236,22 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:closeBtn];
     
     
+    self.navigationController.navigationBar.translucent = NO;
+    
+    
     
 }
 
 -(void)closeBtnClick{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.navigationController) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
+    }else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }
+    
+    
 }
 
 -(void)ym_setCityGroups{
@@ -261,6 +343,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(void)addConstraint
 {
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     //search
     {
  
@@ -329,7 +412,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         widthC.active = YES;
         
         
-        ///约束失败
+        ///约束
         [self.view addConstraints:@[ topC,leftC,rightC ]];
         
     
@@ -396,7 +479,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         bottomC.active = YES;
         
         
-        ///约束失败
+        ///约束
         [self.view addConstraints:@[ topC,leftC,rightC,bottomC ]];
         
         
@@ -474,15 +557,16 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    
     if (_ym_cover) {
         _ym_cover.alpha = 0;
     }
     [self ym_setCover];
     [UIView animateWithDuration:0.5 animations:^{
     //    _ym_navView.ym_y = -64;
-        _ym_searchBar.ym_y = 0;
-        _ym_tableView.ym_y = 64;
-        _ym_tableView.ym_height = self.view.ym_height - 64;
+//        _ym_searchBar.ym_y = 0;
+//        _ym_tableView.ym_y = 64;
+//        _ym_tableView.ym_height = self.view.ym_height - 64;
         _ym_cover.frame = _ym_tableView.frame;
         [_ym_searchBar setShowsCancelButton:YES animated:YES];
         
@@ -498,6 +582,76 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         [_ym_cover addTarget:self action:@selector(ym_coverClick) forControlEvents:UIControlEventTouchUpInside];
         _ym_cover.frame = _ym_tableView.frame;
         [self.view addSubview:_ym_cover];
+        
+        {
+            //约束
+            {
+                
+                UIView *view =  _ym_cover;
+                
+                [self.view addSubview:view];
+                
+                
+                view.translatesAutoresizingMaskIntoConstraints = NO;
+                //        self.view .translatesAutoresizingMaskIntoConstraints = NO;
+                
+                
+                
+                
+                
+                NSLayoutConstraint *leftC =
+                [NSLayoutConstraint constraintWithItem:view
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.view
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1
+                                              constant:0];
+                NSLayoutConstraint *rightC =
+                [NSLayoutConstraint constraintWithItem:view
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.view
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1
+                                              constant:0];
+                
+                
+                
+                NSLayoutConstraint *topC =
+                [NSLayoutConstraint constraintWithItem:view
+                                             attribute:NSLayoutAttributeTop
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:_ym_searchBar
+                                             attribute:NSLayoutAttributeBottom
+                                            multiplier:1
+                                              constant:0];
+                
+                
+                NSLayoutConstraint *bottomC =
+                [NSLayoutConstraint constraintWithItem:view
+                                             attribute:NSLayoutAttributeBottom
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.view
+                                             attribute:NSLayoutAttributeBottom
+                                            multiplier:1
+                                              constant:0];
+                
+                
+                bottomC.active = YES;
+                topC.active = YES;
+                leftC.active = YES;
+                rightC.active = YES;
+                
+                
+                ///约束
+                [self.view addConstraints:@[ topC,leftC,rightC,bottomC ]];
+                
+                
+                
+                
+            }
+        }
     }
     _ym_cover.hidden = NO;
     _ym_cover.alpha = 0.5;
@@ -510,28 +664,37 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 #pragma mark searchBar取消按钮调用
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    searchBar.text = nil;
-    self.ym_citySearch.view.hidden = YES;
+    
+    NSLog(@"----%@",NSStringFromSelector(_cmd));
     
     
     [self ym_cancelBtnClick];
+
+    
+    _ym_citySearch.view.hidden = YES;
+    
+    _ym_searchBar.text = nil;
+    
     
 }
 
 -(void)ym_cancelBtnClick{
-//    _ym_navView.hidden = NO;
-    [UIView animateWithDuration:0.5 animations:^{
-        _ym_cover.hidden = YES;
-//        _ym_navView.ym_y = 0;
-        _ym_searchBar.ym_y = 44;
-        [_ym_searchBar setShowsCancelButton:NO animated:YES];
-        _ym_tableView.ym_y = CGRectGetMaxY(_ym_searchBar.frame);
-        _ym_tableView.ym_height = self.view.ym_height - _ym_tableView.ym_y;
-        _ym_cover.frame = _ym_tableView.frame;
-    }completion:^(BOOL finished) {
-        _ym_cover.hidden = YES;
-    }];
+    
+//    [UIView animateWithDuration:0.5 animations:^{
+//        _ym_cover.hidden = YES;
+//        [_ym_searchBar setShowsCancelButton:NO animated:YES];
+//        _ym_cover.frame = _ym_tableView.frame;
+//    }completion:^(BOOL finished) {
+//        _ym_cover.hidden = YES;
+//    }];
+    
+    
+    _ym_cover.hidden = YES;
+    [_ym_searchBar setShowsCancelButton:NO animated:YES];
+    
     [_ym_searchBar resignFirstResponder];
+    
+    
 }
 
 #pragma mark searchBar编辑的时候调用
