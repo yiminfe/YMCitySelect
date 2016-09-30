@@ -36,12 +36,12 @@
         
         [self.ym_cityArray enumerateObjectsUsingBlock:^(YMCityModel * city, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            if (city.pinYin.length==0) {
-                city.pinYin = [city.name YM_Pinying_quanping];
+            if (city.full_index.length==0) {
+                city.full_index = [city.name YM_Pinying_quanping];
             }
             
-            if (city.pinYinHead.length==0) {
-                city.pinYinHead = [city.name YM_Pinying_head];
+            if (city.short_index.length==0) {
+                city.short_index = [city.name YM_Pinying_head];
             }
             
             [array addObject:city];
@@ -73,7 +73,7 @@
     ym_searchText = ym_searchText.lowercaseString;
     [_ym_resultArray removeAllObjects];
     for (YMCityModel *cityModel in _ym_cityArray) {
-        if ([cityModel.name containsString:ym_searchText] || [cityModel.pinYin containsString:ym_searchText] || [cityModel.pinYinHead containsString:ym_searchText]) {
+        if ([[cityModel.name lowercaseString] containsString:[ym_searchText lowercaseString]] || [[cityModel.full_index lowercaseString] containsString:[ym_searchText lowercaseString]] || [[cityModel.short_index lowercaseString] containsString:[ym_searchText lowercaseString]]) {
             [_ym_resultArray addObject:cityModel];
         }
     }

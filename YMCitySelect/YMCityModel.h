@@ -17,9 +17,9 @@
 
 @property (nonatomic, copy) NSString *name;
 //chengdu
-@property (nonatomic, copy) NSString *pinYin;
+@property (nonatomic, copy) NSString *full_index;
 //cd
-@property (nonatomic, copy) NSString *pinYinHead;
+@property (nonatomic, copy) NSString *short_index;
 ///辖区内的 city 对象,
 @property (nonatomic, strong) NSArray *districts;
 

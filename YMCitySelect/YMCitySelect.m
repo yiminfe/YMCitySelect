@@ -208,14 +208,14 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(void)ym_setNavView{
   
     
-    UIButton *closeBtn = [[UIButton alloc] init];
+    UIButton *closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     if (self.closeBtnImage) {
         [closeBtn setImage:self.closeBtnImage forState:UIControlStateNormal];
 //        [closeBtn setImage:self.closeBtnImage forState:UIControlStateHighlighted];
         
     }else{
-        [closeBtn setImage:[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close_hl"] forState:UIControlStateNormal];
-        [closeBtn setImage:[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close"] forState:UIControlStateHighlighted];
+        [closeBtn setImage:[[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close_hl"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+        [closeBtn setImage:[[UIImage imageNamed:@"YMCitySelect.bundle/btn_navigation_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]forState:UIControlStateHighlighted];
         
     }
     
@@ -230,6 +230,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     
     [closeBtn sizeToFit];
     closeBtn.ym_x = 5;
+    
+    
+//    closeBtn.backgroundColor = [UIColor redColor];
+    
     
     
     self.navigationItem.title  = @"选择城市";
