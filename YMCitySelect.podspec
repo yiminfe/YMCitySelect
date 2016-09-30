@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.framework             = "CoreFoundation","Foundation","CoreGraphics","Security","UIKit"
   s.library		= "z.1.1.3","stdc++","sqlite3"
   s.source_files = 'YMCitySelect'
-  s.resources = 'YMCitySelect'
+  s.resources = 'YMCitySelect/*.{bundle}'
 
 
 #  s.subspec 'YMCitySelect' do |sp|
