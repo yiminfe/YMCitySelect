@@ -666,6 +666,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 
 #pragma mark searchBar取消按钮调用
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar endEditing:YES];
+}
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     
