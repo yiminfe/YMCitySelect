@@ -14,7 +14,7 @@
 
 
 @protocol YMCitySelectDelegate <NSObject>
-
+@optional
 - (void)ym_ymCitySelectCity:(YMCityModel *)city;
 
 @end
