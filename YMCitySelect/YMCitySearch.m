@@ -11,13 +11,13 @@
 
 #import "YMCitySearch.h"
 #import "YMCityModel.h"
+#import "NSString+YM_Pinying.h"
 
 @interface YMCitySearch ()
 
 @end
 
 @implementation YMCitySearch{
-    NSMutableArray *_ym_cityArray;
     NSMutableArray *_ym_resultArray;
 }
 
@@ -27,15 +27,44 @@
     _ym_resultArray = [NSMutableArray array];
 }
 
+ 
+
 -(void)ym_setCitys{
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cities.plist" ofType:nil];
-    NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
-    _ym_cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
-    [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        YMCityModel *cityModel = [[YMCityModel alloc] init];
-        [cityModel setValuesForKeysWithDictionary:obj];
-        [_ym_cityArray addObject:cityModel];
-    }];
+    if (self.ym_cityArray) {
+        
+        NSMutableArray *array = [NSMutableArray array];
+        
+        [self.ym_cityArray enumerateObjectsUsingBlock:^(YMCityModel * city, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (city.full_index.length==0) {
+                city.full_index = [city.name YM_Pinying_quanping];
+            }
+            
+            if (city.short_index.length==0) {
+                city.short_index = [city.name YM_Pinying_head];
+            }
+            
+            [array addObject:city];
+            
+        }];
+            
+      
+        _ym_cityArray = array ;
+        
+    }else{
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cities.plist" ofType:nil];
+        NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
+        _ym_cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
+        [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            YMCityModel *cityModel = [[YMCityModel alloc] init];
+//            [cityModel setValuesForKeysWithDictionary:obj];
+            cityModel.name = [obj objectForKey:@"name"];
+            
+            [_ym_cityArray addObject:cityModel];
+            
+        }];
+    }
+    
 }
 
 -(void)setYm_searchText:(NSString *)ym_searchText{
@@ -44,7 +73,7 @@
     ym_searchText = ym_searchText.lowercaseString;
     [_ym_resultArray removeAllObjects];
     for (YMCityModel *cityModel in _ym_cityArray) {
-        if ([cityModel.name containsString:ym_searchText] || [cityModel.pinYin containsString:ym_searchText] || [cityModel.pinYinHead containsString:ym_searchText]) {
+        if ([[cityModel.name lowercaseString] containsString:[ym_searchText lowercaseString]] || [[cityModel.full_index lowercaseString] containsString:[ym_searchText lowercaseString]] || [[cityModel.short_index lowercaseString] containsString:[ym_searchText lowercaseString]]) {
             [_ym_resultArray addObject:cityModel];
         }
     }
@@ -74,7 +103,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     YMCityModel *cityModel = _ym_resultArray[indexPath.row];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_searchCityResult" object:nil userInfo:@{@"ym_searchCityResultKey": cityModel.name}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_searchCityResult" object:nil userInfo:@{@"ym_searchCityResultKey": cityModel}];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

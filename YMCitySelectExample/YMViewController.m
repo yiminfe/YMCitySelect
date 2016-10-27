@@ -18,8 +18,11 @@
     UILabel *_cityLabel;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+     
     self.title = @"选择城市";
     self.view.backgroundColor = [UIColor whiteColor];
     UIButton *cityBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 94, 100, 30)];
@@ -42,15 +45,65 @@
     clearBtn.center = self.view.center;
     [self.view addSubview:clearBtn];
     [clearBtn addTarget:self action:@selector(clearBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
 
 -(void)cityBtnClick:(UIButton *)btn{
-    [self presentViewController:[[YMCitySelect alloc] initWithDelegate:self] animated:YES completion:nil];
+    YMCitySelect *cityVC =  [[YMCitySelect alloc] initWithDelegate:self];
+    {
+        //手动传入
+        NSMutableArray *cityGroupArray = [NSMutableArray array ];
+        
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"YMCitySelect.bundle/cityGroups.plist" ofType:nil];
+        NSArray *tempArray = [NSArray arrayWithContentsOfFile:path];
+        
+        
+        //手动传入
+        NSMutableArray *cityArray = [NSMutableArray arrayWithCapacity:tempArray.count];
+        NSMutableArray *_ym_ctiyGroups = [NSMutableArray arrayWithCapacity:tempArray.count];
+        
+        [tempArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            YMCityGroupsModel *cityGroupModel = [[YMCityGroupsModel alloc] init];
+            //            [cityGroupModel setValuesForKeysWithDictionary:obj];
+            cityGroupModel.title = [obj objectForKey:@"title"];
+            NSArray *array = [obj objectForKey:@"cities"];
+            NSMutableArray *cities = [NSMutableArray array];
+            for (NSDictionary *info in array ) {
+                
+                YMCityModel *city = [[YMCityModel alloc] init];;
+                if([info isKindOfClass:[NSDictionary class]]){
+                    [city setValuesForKeysWithDictionary:info];
+                    
+                }else if([info isKindOfClass:[NSString class]]){
+                    city.name = (NSString*)info;
+                    
+                }
+                
+                [cities addObject:city];
+            }
+            cityGroupModel.cities = cities;
+            
+            [_ym_ctiyGroups addObject:cityGroupModel];
+            
+        }];
+        
+        cityVC.getGroupBlock = ^NSArray*(void){
+            return _ym_ctiyGroups;
+            
+        };
+
+    }
+    
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:cityVC] animated:YES completion:nil];
+    
+    
 }
 
 -(void)clearBtnClick{
     NSUserDefaults *clear = [NSUserDefaults standardUserDefaults];
-    [clear removeObjectForKey:@"ym_cityNames"];
+    [clear removeObjectForKey:@"ym_cityNames_new"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,8 +111,8 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)ym_ymCitySelectCityName:(NSString *)cityName{
-    _cityLabel.text = cityName;
+-(void)ym_ymCitySelectCity:(YMCityModel *)city {
+    _cityLabel.text = city.name;
 }
 
 /*

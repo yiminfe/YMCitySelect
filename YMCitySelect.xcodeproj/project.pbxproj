@@ -22,6 +22,7 @@
 		047FC5E71CCBDA360062A943 /* YMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 047FC5E61CCBDA360062A943 /* YMSearchBar.m */; };
 		047FC5EA1CCBE9A00062A943 /* YMCityGroupsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 047FC5E91CCBE9A00062A943 /* YMCityGroupsModel.m */; };
 		047FC5F01CCC11970062A943 /* YMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 047FC5EF1CCC11970062A943 /* YMTableViewCell.m */; };
+		22A8606D1D9224BA00333FFC /* NSString+YM_Pinying.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A8606C1D9224BA00333FFC /* NSString+YM_Pinying.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,8 @@
 		047FC5E91CCBE9A00062A943 /* YMCityGroupsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMCityGroupsModel.m; sourceTree = "<group>"; };
 		047FC5EE1CCC11970062A943 /* YMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMTableViewCell.h; sourceTree = "<group>"; };
 		047FC5EF1CCC11970062A943 /* YMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMTableViewCell.m; sourceTree = "<group>"; };
+		22A8606B1D9224BA00333FFC /* NSString+YM_Pinying.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+YM_Pinying.h"; sourceTree = "<group>"; };
+		22A8606C1D9224BA00333FFC /* NSString+YM_Pinying.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+YM_Pinying.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +121,8 @@
 				047FC5E61CCBDA360062A943 /* YMSearchBar.m */,
 				047FC5E21CCB761E0062A943 /* UIView+ym_extension.h */,
 				047FC5E31CCB761E0062A943 /* UIView+ym_extension.m */,
+				22A8606B1D9224BA00333FFC /* NSString+YM_Pinying.h */,
+				22A8606C1D9224BA00333FFC /* NSString+YM_Pinying.m */,
 			);
 			path = YMCitySelect;
 			sourceTree = "<group>";
@@ -148,12 +153,12 @@
 		047FC5A41CCB690D0062A943 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = YiMin;
 				TargetAttributes = {
 					047FC5AB1CCB690D0062A943 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 3YYUCKAF23;
+						DevelopmentTeam = TGZ32BA6KS;
 					};
 				};
 			};
@@ -195,6 +200,7 @@
 			files = (
 				047FC5DC1CCB6D4E0062A943 /* YMCitySelect.m in Sources */,
 				047FC5D81CCB6C4F0062A943 /* YMViewController.m in Sources */,
+				22A8606D1D9224BA00333FFC /* NSString+YM_Pinying.m in Sources */,
 				04505A671CCCA0E100D0613A /* YMCollectionViewCell.m in Sources */,
 				047FC5F01CCC11970062A943 /* YMTableViewCell.m in Sources */,
 				047FC5E41CCB761E0062A943 /* UIView+ym_extension.m in Sources */,
@@ -236,8 +242,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -280,8 +288,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -308,11 +318,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TGZ32BA6KS;
 				INFOPLIST_FILE = YMCitySelectExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Proficient-in-ios.YMCitySelect";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -320,11 +332,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TGZ32BA6KS;
 				INFOPLIST_FILE = YMCitySelectExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Proficient-in-ios.YMCitySelect";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -16,19 +16,19 @@
 
 -(void)layoutSubviews{
     [super layoutSubviews];
-    for (UIView *view in self.subviews) {
-        for (UIView *tempView in view.subviews) {
-            if ([tempView isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
-                tempView.ym_y = 28;
-            }
-            if ([tempView isKindOfClass:NSClassFromString(@"UINavigationButton")]) {
-                UIButton *ym_btn = (UIButton *)tempView;
-                [ym_btn setTitle:@"取消" forState:UIControlStateNormal];
-                [ym_btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                ym_btn.ym_y = 26;
-            }
-        }
-    }
+//    for (UIView *view in self.subviews) {
+//        for (UIView *tempView in view.subviews) {
+//            if ([tempView isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
+//                tempView.ym_y = 0;
+//            }
+//            if ([tempView isKindOfClass:NSClassFromString(@"UINavigationButton")]) {
+//                UIButton *ym_btn = (UIButton *)tempView;
+//                [ym_btn setTitle:@"取消" forState:UIControlStateNormal];
+//                [ym_btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//                ym_btn.ym_y = 0;
+//            }
+//        }
+//    }
 }
 
 @end

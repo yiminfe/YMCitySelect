@@ -10,11 +10,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YMCityModel.h"
 
 @interface YMCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic,copy) NSString *cityName;
+@property (nonatomic,copy) YMCityModel *city;
 
 @property (nonatomic,assign) CGFloat ym_cellWidth;
+@property (strong,nonatomic) UIColor *textColor;
 
 @end

@@ -21,6 +21,8 @@
     UINavigationController *nav =[[UINavigationController alloc] initWithRootViewController:[YMViewController new]];
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
+    
+    NSLog(@"%@",NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, 1));
     return YES;
 }
 

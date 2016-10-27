@@ -10,9 +10,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YMCitySelect.h"
 
 @interface YMCitySearch : UITableViewController
 /** 搜索文字*/
 @property (nonatomic, copy) NSString *ym_searchText;
+///获取城市数据
+@property (nonatomic, strong) NSMutableArray *ym_cityArray;
 
 @end

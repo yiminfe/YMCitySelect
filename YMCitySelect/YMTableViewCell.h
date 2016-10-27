@@ -10,10 +10,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YMCityModel.h"
 
 @protocol YMTableViewCellDelegate <NSObject>
 
--(void)ymcollectionView:(UICollectionView *)collectionView didSelectItemAtCityName:(NSString *)cityName;
+-(void)ymcollectionView:(UICollectionView *)collectionView didSelectItemAtCity :(YMCityModel *)city ;
 
 @end
 
@@ -24,5 +25,10 @@
 @property (nonatomic,assign) CGFloat ym_cellHeight;
 
 @property (nonatomic,weak) id<YMTableViewCellDelegate> ym_cellDelegate;
+@property (strong,nonatomic) UIColor *textColor;
+
+
++(CGFloat)get_ym_w;
++(CGFloat)get_ym_h;
 
 @end

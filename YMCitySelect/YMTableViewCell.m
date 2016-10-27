@@ -20,19 +20,46 @@
 @implementation YMTableViewCell{
     UICollectionView *_ym_collectionView;
     CGFloat ym_w;
+    CGFloat ym_h;
+
 }
 
 static NSString *identifier = @"ym_collectionViewCell";
++(CGFloat)get_ym_w
+{
+    return ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
+}
++(CGFloat)get_ym_h
+{
+    return [YMTableViewCell get_ym_w] / 3 + 10;
+}
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+//    self.ym_width = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
+    
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)_ym_collectionView.collectionViewLayout;
+    ym_w =  [YMTableViewCell get_ym_w];
+    ym_h = [YMTableViewCell get_ym_h ];
+    
+    layout.itemSize = CGSizeMake(ym_w, ym_h);
+   
+    _ym_collectionView.frame = CGRectMake(0, 0, self.ym_width - 27, self.ym_height) ;
 
+    [_ym_collectionView reloadData];
+    
+}
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.ym_width = [UIScreen mainScreen].bounds.size.width;
+        self.ym_width = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
+        
         self.selectionStyle = UITableViewCellSelectionStyleBlue;
         self.backgroundColor =[UIColor colorWithRed:243/255.0 green:243/255.0 blue:243/255.0 alpha:1.0];
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        ym_w = ([UIScreen mainScreen].bounds.size.width - 72) / 3;
-        CGFloat ym_h = ym_w / 3;
+        ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
+        
         layout.itemSize = CGSizeMake(ym_w, ym_h);
         layout.sectionInset = UIEdgeInsetsMake(15, 15, 0, 0);
         layout.minimumLineSpacing = 15;
@@ -59,24 +86,36 @@ static NSString *identifier = @"ym_collectionViewCell";
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     YMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    cell.cityName = self.citys[indexPath.item];
+    cell.city = self.citys[indexPath.item];
+    cell.textColor = self.textColor;
     return cell;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *cityName = self.citys[indexPath.item];
-    if ([cityName isEqualToString:@"定位失败，请点击重试"]) {
+    
+    YMCityModel *cityObj = self.citys[indexPath.item];
+    if ([cityObj.name hasPrefix:@"定位失败"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_updateLocation" object:nil];
         YMCollectionViewCell *cell = (YMCollectionViewCell *)[_ym_collectionView cellForItemAtIndexPath:indexPath];
-        cell.cityName = @"正在定位中...";
+        
+        YMCityModel *city = [[YMCityModel alloc] init];
+        city.name = @"正在定位中...";
+        cell.city = city ;
         cell.ym_cellWidth = ym_w;
         return;
     }
-    if ([cityName isEqualToString:@"正在定位中..."]) {
+    if ([cityObj.name isEqualToString:@"正在定位中..."]) {
         return;
     }
-    if ([self.ym_cellDelegate respondsToSelector:@selector(ymcollectionView:didSelectItemAtCityName:)]) {
-        [self.ym_cellDelegate ymcollectionView:collectionView didSelectItemAtCityName:cityName];
+    
+    
+    if ([self.ym_cellDelegate respondsToSelector:@selector(ymcollectionView:didSelectItemAtCity :)]) {
+        
+        
+        [self.ym_cellDelegate ymcollectionView:collectionView didSelectItemAtCity :cityObj ];
+        
+        
+        
     }
 }
 
@@ -111,10 +150,13 @@ static NSString *identifier = @"ym_collectionViewCell";
 -(void)ym_setReloadData{
     NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
     YMCollectionViewCell *cell = (YMCollectionViewCell *)[_ym_collectionView cellForItemAtIndexPath:index];
-    cell.cityName = self.citys[index.row];
-    if (![self.citys[index.row] isEqualToString:@"定位失败，请点击重试"]) {
+    cell.city = self.citys[index.row];
+    
+    YMCityModel *city = self.citys[index.row];
+    if (![city.name hasPrefix:@"定位失败"]) {
         cell.ym_cellWidth = ym_w;
     }
 }
+
 
 @end

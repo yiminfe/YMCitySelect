@@ -11,14 +11,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YMCityModel : NSObject
+@interface YMCityModel : NSObject<NSCoding>
+
+@property (nonatomic, copy) NSString *id;
 
 @property (nonatomic, copy) NSString *name;
-
-@property (nonatomic, copy) NSString *pinYin;
-
-@property (nonatomic, copy) NSString *pinYinHead;
-
+//chengdu
+@property (nonatomic, copy) NSString *full_index;
+//cd
+@property (nonatomic, copy) NSString *short_index;
+///辖区内的 city 对象,
 @property (nonatomic, strong) NSArray *districts;
+
++(instancetype)cityWithName:(NSString *)name;
 
 @end
