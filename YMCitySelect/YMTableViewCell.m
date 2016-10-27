@@ -31,7 +31,7 @@ static NSString *identifier = @"ym_collectionViewCell";
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)_ym_collectionView.collectionViewLayout;
     ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
-    CGFloat ym_h = ym_w / 3;
+    CGFloat ym_h = ym_w / 3 + 10;
     layout.itemSize = CGSizeMake(ym_w, ym_h);
    
     _ym_collectionView.frame = CGRectMake(0, 0, self.ym_width - 27, self.ym_height) ;
