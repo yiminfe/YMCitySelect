@@ -20,9 +20,19 @@
 @implementation YMTableViewCell{
     UICollectionView *_ym_collectionView;
     CGFloat ym_w;
+    CGFloat ym_h;
+
 }
 
 static NSString *identifier = @"ym_collectionViewCell";
++(CGFloat)get_ym_w
+{
+    return ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
+}
++(CGFloat)get_ym_h
+{
+    return [YMTableViewCell get_ym_w] / 3 + 10;
+}
 -(void)layoutSubviews
 {
     [super layoutSubviews];
@@ -30,8 +40,9 @@ static NSString *identifier = @"ym_collectionViewCell";
 //    self.ym_width = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)_ym_collectionView.collectionViewLayout;
-    ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
-    CGFloat ym_h = ym_w / 3 + 10;
+    ym_w =  [YMTableViewCell get_ym_w];
+    ym_h = [YMTableViewCell get_ym_h ];
+    
     layout.itemSize = CGSizeMake(ym_w, ym_h);
    
     _ym_collectionView.frame = CGRectMake(0, 0, self.ym_width - 27, self.ym_height) ;
@@ -49,7 +60,6 @@ static NSString *identifier = @"ym_collectionViewCell";
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
         
-        CGFloat ym_h = ym_w / 3;
         layout.itemSize = CGSizeMake(ym_w, ym_h);
         layout.sectionInset = UIEdgeInsetsMake(15, 15, 0, 0);
         layout.minimumLineSpacing = 15;

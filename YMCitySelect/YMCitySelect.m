@@ -895,8 +895,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(CGFloat)ym_setcellHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat ym_height = 44;
     YMCityGroupsModel *cityGroupModel = _ym_ctiyGroups[indexPath.section];
-   CGFloat ym_w = ([[UIApplication sharedApplication] keyWindow].bounds.size.width - 72) / 3;
-    CGFloat ym_h = ym_w / 3;
+//    CGFloat ym_w = [YMTableViewCell get_ym_w];;
+    CGFloat ym_h = [YMTableViewCell get_ym_h];;
+    
+    
     if (cityGroupModel.title.length > 1) {
         NSInteger count = cityGroupModel.cities.count;
             ym_height = (count / 3 + (count % 3 == 0?0:1)) * (ym_h + 15) + 15;
