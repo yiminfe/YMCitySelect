@@ -19,7 +19,7 @@
     for (UIView *view in self.subviews) {
         for (UIView *tempView in view.subviews) {
             if ([tempView isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
-                tempView.ym_y = 28;
+                tempView.ym_y = 24;
             }
             if ([tempView isKindOfClass:NSClassFromString(@"UINavigationButton")]) {
                 UIButton *ym_btn = (UIButton *)tempView;
