@@ -17,6 +17,10 @@
 #import "YMTableViewCell.h"
 #import <CoreLocation/CoreLocation.h>
 
+#define  LL_ScreenWidth   [UIScreen mainScreen].bounds.size.width
+#define  LL_ScreenHeight  [UIScreen mainScreen].bounds.size.height
+#define  LL_iPhoneX (LL_ScreenWidth == 375.f && LL_ScreenHeight == 812.f ? YES : NO)
+
 @interface YMCitySelect ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,CLLocationManagerDelegate,YMTableViewCellDelegate>
 @property (nonatomic,strong) NSMutableArray *ym_cityNames;
 @property (nonatomic,strong) YMCitySearch *ym_citySearch;
@@ -34,6 +38,8 @@
     CLLocationManager *_ym_locationManager;
     UIButton *_ym_locationCityName;
     NSMutableArray *_ym_locationcityArry;
+    
+    CGFloat _navHeight;
 }
 
 static NSString *reuseIdentifier = @"ym_cellTwo";
@@ -47,13 +53,13 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
 -(YMCitySearch *)ym_citySearch{
     if (!_ym_citySearch) {
-                YMCitySearch *ym_citySearchCtrl = [YMCitySearch new];
-                [self addChildViewController:ym_citySearchCtrl];
-                [self.view addSubview:ym_citySearchCtrl.view];
+        YMCitySearch *ym_citySearchCtrl = [YMCitySearch new];
+        [self addChildViewController:ym_citySearchCtrl];
+        [self.view addSubview:ym_citySearchCtrl.view];
         ym_citySearchCtrl.view.frame = CGRectMake(0, 64, self.view.ym_width, self.view.ym_height - 64);
-                _ym_citySearch = ym_citySearchCtrl;
-            }
-            return _ym_citySearch;
+        _ym_citySearch = ym_citySearchCtrl;
+    }
+    return _ym_citySearch;
 }
 
 -(instancetype)initWithDelegate:(id)targe{
@@ -66,6 +72,12 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _navHeight = 64;
+    if(LL_iPhoneX){
+        _navHeight += 24;
+    }
+    
     self.view.backgroundColor = [UIColor whiteColor];
     [self ym_setSearchBar];
     [self ym_setNavView];
@@ -79,16 +91,16 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 }
 
 -(void)ym_setSearchBar{
-    _ym_searchBar = [[YMSearchBar alloc] initWithFrame:CGRectMake(0, 44, self.view.ym_width, 64)];
+    _ym_searchBar = [[YMSearchBar alloc] initWithFrame:CGRectMake(0, _navHeight - 20, self.view.ym_width, 64)];
     _ym_searchBar.placeholder = @"请输入城市名/拼音/首字母拼音";
     _ym_searchBar.delegate = self;
     [self.view addSubview:_ym_searchBar];
 }
 
 -(void)ym_setNavView{
-    _ym_navView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 64)];
+    _ym_navView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _navHeight)];
     _ym_navView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 63.5, _ym_navView.ym_width, 0.5)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _navHeight - 0.5, _ym_navView.ym_width, 0.5)];
     lineView.backgroundColor = [UIColor colorWithRed:171.0/255.0 green:172.0/255.0 blue:171.0/255.0 alpha:1.0];
     [_ym_navView addSubview:lineView];
     UIButton *closeBtn = [[UIButton alloc] init];
@@ -185,10 +197,10 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     }
     [self ym_setCover];
     [UIView animateWithDuration:0.5 animations:^{
-        _ym_navView.ym_y = -64;
-        _ym_searchBar.ym_y = 0;
-        _ym_tableView.ym_y = 64;
-        _ym_tableView.ym_height = self.view.ym_height - 64;
+        _ym_navView.ym_y = -_navHeight;
+        _ym_searchBar.ym_y = _navHeight - 64;
+        _ym_tableView.ym_y = _navHeight;
+        _ym_tableView.ym_height = self.view.ym_height - _navHeight;
         _ym_cover.frame = _ym_tableView.frame;
         [_ym_searchBar setShowsCancelButton:YES animated:YES];
         
@@ -227,7 +239,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
     [UIView animateWithDuration:0.5 animations:^{
         _ym_cover.hidden = YES;
         _ym_navView.ym_y = 0;
-        _ym_searchBar.ym_y = 44;
+        _ym_searchBar.ym_y = _navHeight - 20;
         [_ym_searchBar setShowsCancelButton:NO animated:YES];
         _ym_tableView.ym_y = CGRectGetMaxY(_ym_searchBar.frame);
         _ym_tableView.ym_height = self.view.ym_height - _ym_tableView.ym_y;
@@ -370,11 +382,11 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 -(CGFloat)ym_setcellHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat ym_height = 44;
     YMCityGroupsModel *cityGroupModel = _ym_ctiyGroups[indexPath.section];
-   CGFloat ym_w = ([UIScreen mainScreen].bounds.size.width - 72) / 3;
+    CGFloat ym_w = ([UIScreen mainScreen].bounds.size.width - 72) / 3;
     CGFloat ym_h = ym_w / 3;
     if (cityGroupModel.title.length > 1) {
         NSInteger count = cityGroupModel.cities.count;
-            ym_height = (count / 3 + (count % 3 == 0?0:1)) * (ym_h + 15) + 15;
+        ym_height = (count / 3 + (count % 3 == 0?0:1)) * (ym_h + 15) + 15;
     }
     return ym_height;
 }
@@ -416,7 +428,8 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ym_locationReloadData" object:nil];
     }];
-
+    
 }
 
 @end
+
