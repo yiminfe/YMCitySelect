@@ -218,6 +218,7 @@ static NSString *reuseIdentifier = @"ym_cellTwo";
 {
     searchBar.text = nil;
     self.ym_citySearch.view.hidden = YES;
+    _ym_citySearch = nil;
     [self ym_cancelBtnClick];
 }
 
